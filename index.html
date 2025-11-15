@@ -153,7 +153,6 @@
 
     <div class="navbar">
         <div class="logo-text">Anlık <span>Haber</span></div>
-
         <div class="menu">
             <a href="#">Gündem</a>
             <a href="#">Ekonomi</a>
@@ -187,41 +186,37 @@
     </div>
 
     <script>
+        const API_KEY = "G3V-8o9CrTG77aYYsTinjOCF9icYT0QDzG4ZdxriiQkIh21v";
+
         async function loadNews() {
             try {
-                // TRT Haber + NTV Haber RSS kaynakları
-                const sources = [
-                    "https://api.rss2json.com/v1/api.json?rss_url=https://www.trt.net.tr/rss/gundem.rss",
-                    "https://api.rss2json.com/v1/api.json?rss_url=https://www.ntv.com.tr/gundem.rss"
-                ];
+                const res = await fetch(
+                    https://api.currentsapi.services/v1/latest-news?apiKey=${API_KEY}&language=tr
+                );
 
-                let allNews = [];
+                const data = await res.json();
 
-                for (let url of sources) {
-                    const res = await fetch(url);
-                    const data = await res.json();
-                    if (data.items) allNews = allNews.concat(data.items);
-                }
+                const list = data.news || [];
 
-                // Haberleri tarihe göre sırala
-                allNews.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
-
-                renderSlider(allNews);
-                renderBreaking(allNews);
-                renderNews(allNews);
-                renderPopular(allNews);
+                renderSlider(list);
+                renderBreaking(list);
+                renderNews(list);
+                renderPopular(list);
 
             } catch (err) {
-                console.error("Haber Yükleme Hatası:", err);
+                console.error("API Hatası:", err);
             }
         }
 
         function renderSlider(list) {
-            const imgBox = document.getElementById("sliderImage");
+            const img = document.getElementById("sliderImage");
             let i = 0;
 
             function next() {
-                imgBox.src = list[i].thumbnail || "https://via.placeholder.com/1200x400";
+                img.src =
+                    list[i].image ||
+                    list[i].image_url ||
+                    "https://via.placeholder.com/1200x400";
                 i = (i + 1) % list.length;
             }
 
@@ -243,12 +238,12 @@
                 div.className = "news-card";
 
                 div.innerHTML = `
-                    <img src="${item.thumbnail}">
+                    <img src="${item.image || item.image_url || "https://via.placeholder.com/300"}">
                     <div class="news-card-title">${item.title}</div>
-                    <div class="news-card-desc">${item.description.slice(0, 120)}...</div>
+                    <div class="news-card-desc">${item.description || ""}</div>
                 `;
 
-                div.onclick = () => window.open(item.link, "_blank");
+                div.onclick = () => window.open(item.url, "_blank");
                 grid.appendChild(div);
             });
         }
@@ -261,7 +256,7 @@
                 const li = document.createElement("li");
                 li.innerText = "• " + item.title;
                 li.style.cursor = "pointer";
-                li.onclick = () => window.open(item.link, "_blank");
+                li.onclick = () => window.open(item.url, "_blank");
                 ul.appendChild(li);
             });
         }
