@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<title>Anlık Haber – Son Dakika, Canlı Borsa, Gündem</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<style>
+/* =========================================================
+   ANLIK HABER – FULL GÖMÜLÜ CSS
+   ========================================================= */
+body {
+  margin: 0;
+  background: #0b0f1a;
+  font-family: Arial, sans-serif;
+  color: #fff;
+}
+
+/* HEADER */
+header {
+  background: #111627;
+  padding: 15px 25px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: bold;
+  background: linear-gradient(90deg, #ff3b3b, #ff9a3b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+nav a {
+  color: #aab3d0;
+  margin-left: 15px;
+  text-decoration: none;
+  font-size: 14px;
+}
+nav a:hover {
+  color: #fff;
+}
+
+.live-tag {
+  background: #ff3b3b;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+/* BREAKING NEWS */
+#breakingBar {
+  background: #ff3b3b;
+  padding: 8px 10px;
+  font-weight: bold;
+  overflow: hidden;
+  white-space: nowrap;
+}
+#breakingTicker {
+  animation: ticker 25s linear infinite;
+  display: inline-block;
+}
+@keyframes ticker {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-250%); }
+}
+
+/* LAYOUT */
+.container {
+  display: flex;
+  gap: 25px;
+  padding: 20px;
+}
+
+/* HABERLER */
+#featuredNews {
+  background: #141b2f;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+}
+
+.featured-img {
+  width: 100%;
+  height: 260px;
+  background-size: cover;
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+
+.news-card {
+  background: #141b2f;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.news-card:hover {
+  transform: scale(1.03);
+}
+.news-thumb {
+  height: 150px;
+  background-size: cover;
+  background-position: center;
+}
+.news-body {
+  padding: 12px;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 30%;
+}
+
+/* BORSA */
+#marketBox {
+  background: #141b2f;
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.market-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #222a42;
+}
+.market-name { font-size: 14px; }
+.market-price { font-size: 14px; }
+.positive { color: #41ff6b; }
+.negative { color: #ff3b3b; }
+
+/* POPULAR */
+#popularList li {
+  padding: 6px 0;
+  cursor: pointer;
+  list-style: none;
+  color: #aab3d0;
+}
+#popularList li:hover {
+  color: #fff;
+}
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 15px;
+  margin-top: 40px;
+  background: #111627;
+  color: #aab3d0;
+  font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">Anlık Haber</div>
+  <nav>
+    <a href="#">Gündem</a>
+    <a href="#">Ekonomi</a>
+    <a href="#">Spor</a>
+    <a href="#">Teknoloji</a>
+  </nav>
+  <div class="live-tag">CANLI</div>
+</header>
+
+<div id="breakingBar">
+  <span id="breakingTicker">Yükleniyor...</span>
+</div>
+
+<div class="container">
+
+  <div style="width: 70%;">
+    
+    <section id="featuredNews">
+      <div id="featuredImg" class="featured-img"></div>
+      <h2 id="featuredTitle"></h2>
+      <p id="featuredDesc"></p>
+      <span id="featuredDate"></span>
+    </section>
+
+    <h2>Güncel Haberler</h2>
+    <div id="generalNews"
+      style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:15px;">
+    </div>
+
+  </div>
+
+  <aside class="sidebar">
+
+    <div id="marketBox">
+      <h3>Canlı Borsa (Finnhub)</h3>
+      <div id="marketList"></div>
+    </div>
+
+    <div id="popularBox">
+      <h3>En Çok Okunanlar</h3>
+      <ul id="popularList"></ul>
+    </div>
+
+  </aside>
+
+</div>
+
+
+<script>
+// =========================================================
+//  GERÇEK HABER API (NewsData.io)
+// =========================================================
+const NEWS_API_KEY = "pub_b64510ef0d7a472f803e4d7c5e28e06e";
+
+async function fetchNews() {
+    try {
+        const url =
+          `https://newsdata.io/api/1/news?apikey=${NEWS_API_KEY}&country=tr&language=tr`;
+
+        const res = await fetch(url);
+        const data = await res.json();
+        const list = data.results || [];
+
+        renderFeatured(list[0]);
+        renderNews(list);
+        renderBreaking(list);
+        renderPopular(list);
+
+    } catch (err) {
+        console.error("HABER API HATASI:", err);
+        document.getElementById("breakingTicker").textContent =
+          "Haberler yüklenemedi.";
+    }
+}
+
+// ----------- Öne Çıkan Haber ----------
+function renderFeatured(item) {
+    if (!item) return;
+
+    const img = item.image_url || item.image || "";
+    document.getElementById("featuredImg").style.backgroundImage =
+      `url('${img}')`;
+
+    document.getElementById("featuredTitle").textContent = item.title || "";
+    document.getElementById("featuredDesc").textContent = item.description || "";
+    document.getElementById("featuredDate").textContent =
+      new Date(item.pubDate).toLocaleString("tr-TR");
+
+    document.getElementById("featuredNews").onclick = () => {
+        if (item.link) window.open(item.link, "_blank");
+    };
+}
+
+// ----------- Haber Listesi ----------
+function renderNews(list) {
+    const area = document.getElementById("generalNews");
+    area.innerHTML = "";
+
+    list.forEach(item => {
+        const img = item.image_url || item.image || "https://via.placeholder.com/300x200?text=Haber";
+
+        const card = document.createElement("div");
+        card.className = "news-card";
+        card.innerHTML = `
+            <div class="news-thumb" style="background-image:url('${img}')"></div>
+            <div class="news-body">
+                <div class="news-title">${item.title || ""}</div>
+                <div class="news-summary">${item.description || ""}</div>
+                <div class="news-meta">${new Date(item.pubDate).toLocaleString("tr-TR")}</div>
+            </div>
+        `;
+        card.onclick = () => window.open(item.link, "_blank");
+
+        area.appendChild(card);
+    });
+}
+
+// ----------- Son Dakika Ticker ----------
+function renderBreaking(list) {
+    const titles = list.slice(0, 10).map(x => x.title).join("  •  ");
+    document.getElementById("breakingTicker").textContent = titles;
+}
+
+// ----------- En Çok Okunanlar ----------
+function renderPopular(list) {
+    const ul = document.getElementById("popularList");
+    ul.innerHTML = "";
+
+    list.slice(0, 5).forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = item.title;
+        li.onclick = () => window.open(item.link, "_blank");
+        ul.appendChild(li);
+    });
+}
+
+
+// =========================================================
+//  CANLI BORSA – Finnhub.io API
+// =========================================================
+const FINNHUB_KEY = "d4c70r9r01qoua32qbc0d4c70r9r01qoua32qbcg";
+
+// BIST + Döviz
+const symbols = [
+    { symbol: "XU100.IS", name: "BIST 100" },
+    { symbol: "USDTRY", name: "Dolar / TL" },
+    { symbol: "EURTRY", name: "Euro / TL" },
+];
+
+async function fetchMarket() {
+    const box = document.getElementById("marketList");
+    box.innerHTML = "";
+
+    for (const item of symbols) {
+        try {
+            const url =
+              `https://finnhub.io/api/v1/quote?symbol=${item.symbol}&token=${FINNHUB_KEY}`;
+
+            const res = await fetch(url);
+            const data = await res.json();
+
+            const price = data.c;
+            const prev = data.pc;
+            const diff = ((price - prev) / prev) * 100;
+
+            const div = document.createElement("div");
+            div.className = "market-item";
+            div.innerHTML = `
+                <div class="market-name">${item.name}</div>
+                <div class="market-price ${diff >= 0 ? "positive" : "negative"}">
+                    ${price} (${diff.toFixed(2)}%)
+                </div>
+            `;
+
+            box.appendChild(div);
+
+        } catch (err) {
+            console.error("BORSA API HATASI:", err);
+        }
+    }
+}
+
+// =========================================================
+//  OTOMATİK YENİLEME
+// =========================================================
+fetchNews();
+fetchMarket();
+
+setInterval(fetchNews, 5 * 60 * 1000);
+setInterval(fetchMarket, 30 * 1000);
+
+</script>
+
+</body>
+  </html>
