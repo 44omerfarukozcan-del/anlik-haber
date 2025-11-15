@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spor Haberleri - Anlık Haber</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body { margin:0; padding:0; font-family:'Inter',sans-serif; background:#0f111a; color:#fff;}
+        .navbar{width:100%;padding:18px 20px;background:#151821;border-bottom:2px solid #ff3b3b;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:999;}
+        .logo-text{font-size:28px;font-weight:800;color:#ff5e3a;}
+        .logo-text span{color:#fff;}
+        .menu a{margin-left:20px;text-decoration:none;color:#ddd;font-weight:500;}
+        .menu a:hover{color:#ff5e3a;}
+        .slider{width:100%;height:250px;overflow:hidden;}
+        .slider img{width:100%;height:250px;object-fit:cover;border-bottom:2px solid #ff5e3a;}
+        .breaking-news{background:#ff3b3b;padding:10px;font-weight:700;white-space:nowrap;overflow:hidden;}
+        .breaking-text{display:inline-block;padding-left:100%;animation:breaking 12s linear infinite;}
+        @keyframes breaking{from{transform:translateX(0);}to{transform:translateX(-100%);}}
+        .content{padding:20px;}
+        @media(min-width:900px){.content{display:grid;grid-template-columns:2fr 1fr;gap:20px;}}
+        .news-title{font-size:22px;margin-bottom:10px;font-weight:700;}
+        .news-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+        .news-card{background:#151821;padding:14px;border-radius:10px;border:1px solid #1f2533;cursor:pointer;transition:.3s;}
+        .news-card:hover{transform:scale(1.03);border-color:#ff5e3a;}
+        .news-card img{width:100%;height:170px;border-radius:8px;object-fit:cover;}
+        .sidebar{background:#151821;padding:18px;border-radius:10px;margin-bottom:20px;}
+    </style>
+</head>
+
+<body>
+
+    <div class="navbar">
+        <div class="logo-text">Anlık <span>Haber</span></div>
+
+        <div class="menu">
+            <a href="index.html">Gündem</a>
+            <a href="ekonomi.html">Ekonomi</a>
+            <a href="spor.html" style="color:#ff5e3a;">Spor</a>
+            <a href="teknoloji.html">Teknoloji</a>
+        </div>
+    </div>
+
+    <div class="slider">
+        <img id="sliderImage" src="https://via.placeholder.com/1200x400?text=Spor+Haberleri">
+    </div>
+
+    <div class="breaking-news">
+        <span id="breakingText" class="breaking-text">Yükleniyor...</span>
+    </div>
+
+    <div class="content">
+        <div>
+            <div class="news-title">⚽ Spor Haberleri</div>
+            <div class="news-grid" id="newsGrid"></div>
+        </div>
+
+        <div>
+            <div class="sidebar">
+                <h3>📈 Canlı Borsa</h3>
+                <div id="bist" style="height:240px;margin-bottom:20px;"></div>
+                <div id="usd" style="height:240px;margin-bottom:20px;"></div>
+                <div id="eur" style="height:240px;"></div>
+            </div>
+
+            <div class="sidebar">
+                <h3>🔥 En Çok Okunanlar</h3>
+                <ul id="popularList" style="line-height:1.6;padding-left:15px;"></ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://s3.tradingview.com/tv.js"></script>
+
+    <script>
+        const API_KEY = "pub_b64510ef0d7a472f803e4d7c5e28e06e";
+
+        async function loadNews() {
+            const res = await fetch(https://newsdata.io/api/1/news?apikey=${API_KEY}&country=tr&language=tr&category=Sports);
+            const data = await res.json();
+            const list = data.results || [];
+
+            renderSlider(list);
+            renderBreaking(list);
+            renderNews(list);
+            renderPopular(list);
+        }
+
+        function renderSlider(list) {
+            const img = document.getElementById("sliderImage");
+            let i = 0;
+            function next() {
+                img.src = list[i]?.image_url || "https://via.placeholder.com/1200x400";
+                i = (i + 1) % list.length;
+            }
+            next();
+            setInterval(next, 4000);
+        }
+
+        function renderBreaking(list) {
+            document.getElementById("breakingText").innerText =
+                list.map(n => n.title).slice(0, 10).join("  •  ");
+        }
+
+        function renderNews(list) {
+            const grid = document.getElementById("newsGrid");
+            list.forEach(x => {
+                const div = document.createElement("div");
+                div.className = "news-card";
+                div.innerHTML = `
+                    <img src="${x.image_url || 'https://via.placeholder.com/300'}">
+                    <div class="news-card-title">${x.title}</div>
+                `;
+                div.onclick = () => window.open(x.link, "_blank");
+                grid.appendChild(div);
+            });
+        }
+
+        function renderPopular(list) {
+            const ul = document.getElementById("popularList");
+            list.slice(0, 10).forEach(x => {
+                const li = document.createElement("li");
+                li.textContent = "• " + x.title;
+                li.onclick = () => window.open(x.link, "_blank");
+                li.style.cursor = "pointer";
+                ul.appendChild(li);
+            });
+        }
+
+        loadNews();
+
+        new TradingView.widget({ container_id:"bist", autosize:true, symbol:"BIST:XU100", interval:"30", theme:"dark", locale:"tr", hide_top_toolbar:true });
+        new TradingView.widget({ container_id:"usd", autosize:true, symbol:"FX:USDTRY", interval:"30", theme:"dark", locale:"tr", hide_top_toolbar:true });
+        new TradingView.widget({ container_id:"eur", autosize:true, symbol:"FX:EURTRY", interval:"30", theme:"dark", locale:"tr", hide_top_toolbar:true });
+    </script>
+
+</body>
+</html>
