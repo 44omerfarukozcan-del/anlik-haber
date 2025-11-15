@@ -2,328 +2,273 @@
 <html lang="tr">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Anlık Haber - Son Dakika & Canlı Borsa</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anlık Haber - Son Dakika & Canlı Borsa</title>
 
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Inter', sans-serif;
-      background: #0f111a;
-      color: #fff;
-    }
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
-    .navbar {
-      width: 100%;
-      padding: 18px 20px;
-      background: #151821;
-      border-bottom: 2px solid #ff3b3b;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 999;
-    }
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: #0f111a;
+            color: #fff;
+        }
 
-    .logo-text {
-      font-size: 28px;
-      font-weight: 800;
-      color: #ff5e3a;
-    }
+        .navbar {
+            width: 100%;
+            padding: 18px 20px;
+            background: #151821;
+            border-bottom: 2px solid #ff3b3b;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
 
-    .logo-text span {
-      color: #fff;
-    }
+        .logo-text {
+            font-size: 28px;
+            font-weight: 800;
+            color: #ff5e3a;
+        }
 
-    .menu a {
-      margin-left: 20px;
-      text-decoration: none;
-      color: #ddd;
-      font-weight: 500;
-    }
+        .logo-text span {
+            color: #fff;
+        }
 
-    .menu a:hover {
-      color: #ff5e3a;
-    }
+        .menu a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #ddd;
+            font-weight: 500;
+        }
 
-    .slider {
-      width: 100%;
-      height: 250px;
-      overflow: hidden;
-    }
+        .menu a:hover {
+            color: #ff5e3a;
+        }
 
-    .slider img {
-      width: 100%;
-      height: 250px;
-      object-fit: cover;
-      border-bottom: 2px solid #ff5e3a;
-    }
+        .slider {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+        }
 
-    .breaking-news {
-      background: #ff3b3b;
-      padding: 10px;
-      font-weight: 700;
-      overflow: hidden;
-      white-space: nowrap;
-    }
-.breaking-text{
-  display:inline-block
-    animation:breaking 2minute linear infinite;
-    
+        .slider img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-bottom: 2px solid #ff5e3a;
+        }
 
-    @keyframes breaking {
-      from {
-        transform: translateX(0);
-      }
+        .breaking-news {
+            background: #ff3b3b;
+            padding: 10px;
+            font-weight: 700;
+            overflow: hidden;
+            white-space: nowrap;
+        }
 
-      to {
-        transform: translateX(-100%);
-      }
-    }
+        .breaking-text {
+            display: inline-block;
+            padding-left: 100%;
+            animation: breaking 55s linear infinite;
+        }
 
-    .content {
-      padding: 20px;
-    }
+        @keyframes breaking {
+            from { transform: translateX(0); }
+            to { transform: translateX(-100%); }
+        }
 
-    @media(min-width: 900px) {
-      .content {
-        display: grid;
-        grid-template-columns: 2fr 1fr;
-        gap: 20px;
-      }
-    }
+        .content {
+            padding: 20px;
+        }
 
-    .news-title {
-      font-size: 22px;
-      margin-bottom: 10px;
-      font-weight: 700;
-    }
+        @media(min-width: 900px) {
+            .content {
+                display: grid;
+                grid-template-columns: 2fr 1fr;
+                gap: 20px;
+            }
+        }
 
-    .news-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 18px;
-    }
+        .news-title {
+            font-size: 22px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
 
-    .news-card {
-      background: #151821;
-      padding: 14px;
-      border-radius: 10px;
-      border: 1px solid #1f2533;
-      transition: .3s;
-      cursor: pointer;
-    }
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 18px;
+        }
 
-    .news-card:hover {
-      transform: scale(1.03);
-      border-color: #ff5e3a;
-    }
+        .news-card {
+            background: #151821;
+            padding: 14px;
+            border-radius: 10px;
+            border: 1px solid #1f2533;
+            transition: .3s;
+            cursor: pointer;
+        }
 
-    .news-card img {
-      width: 100%;
-      height: 180px;
-      border-radius: 8px;
-      object-fit: cover;
-    }
+        .news-card:hover {
+            transform: scale(1.03);
+            border-color: #ff5e3a;
+        }
 
-    .news-card-title {
-      font-weight: 700;
-      font-size: 18px;
-      margin-top: 8px;
-    }
+        .news-card img {
+            width: 100%;
+            height: 180px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
 
-    .news-card-desc {
-      font-size: 14px;
-      color: #bfc3cc;
-      margin-top: 5px;
-    }
+        .news-card-title {
+            font-weight: 700;
+            font-size: 18px;
+            margin-top: 8px;
+        }
 
-    .sidebar {
-      background: #151821;
-      padding: 18px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-    }
-  </style>
+        .news-card-desc {
+            font-size: 14px;
+            color: #bfc3cc;
+            margin-top: 5px;
+        }
+
+        .sidebar {
+            background: #151821;
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 
 <body>
 
-  <div class="navbar">
-    <div class="logo-text">Anlık <span>Haber</span></div>
-    
-      <a style="background:#ff3b3b; padding:6px 12px; border-radius:6px;">CANLI</a>
-    </div>
-  </div>
+    <div class="navbar">
+        <div class="logo-text">Anlık <span>Haber</span></div>
 
-  <div class="slider">
-    <img id="sliderImage" src="https://via.placeholder.com/1200x400?text=Y%C3%BCkleniyor...">
-  </div>
-
-  <div class="breaking-news">
-    <span id="breakingText" class="breaking-text">Son dakika haberleri yükleniyor...</span>
-  </div>
-
-  <div class="content">
-    <div class="news-section">
-      <div class="news-title">📌 Güncel Haberler</div>
-      <div class="news-grid" id="newsGrid"></div>
+        <div class="menu">
+            <a href="#">Gündem</a>
+            <a href="#">Ekonomi</a>
+            <a href="#">Spor</a>
+            <a href="#">Teknoloji</a>
+            <a style="background:#ff3b3b; padding:6px 12px; border-radius:6px;">CANLI</a>
+        </div>
     </div>
 
-    <div>
-      <div class="sidebar">
-        <h3>📈 Canlı Borsa</h3>
-        <div class="tradingview-widget-container" style="margin-bottom:20px;">
-          <div id="tradingview_bist" style="height:240px;"></div>
-        </div>
-        <div class="tradingview-widget-container" style="margin-bottom:20px;">
-          <div id="tradingview_usd" style="height:240px;"></div>
-        </div>
-        <div class="tradingview-widget-container">
-          <div id="tradingview_eur" style="height:240px;"></div>
-        </div>
-      </div>
-
-      <div class="sidebar">
-        <h3>🔥 En Çok Okunanlar</h3>
-        <ul id="popularList" style="line-height:1.6; padding-left:15px;"></ul>
-      </div>
+    <div class="slider">
+        <img id="sliderImage" src="https://via.placeholder.com/1200x400?text=Y%C3%BCkleniyor...">
     </div>
-  </div>
 
-  <script src="https://s3.tradingview.com/tv.js"></script>
+    <div class="breaking-news">
+        <span id="breakingText" class="breaking-text">Son dakika haberleri yükleniyor...</span>
+    </div>
 
-  <script>
-    async function loadNews() {
-      try {
-        const sources = [
-          "https://api.rss2json.com/v1/api.json?rss_url=https://www.trt.net.tr/rss/gundem.rss",
-          "https://api.rss2json.com/v1/api.json?rss_url=https://www.ntv.com.tr/gundem.rss",
-          "https://api.rss2json.com/v1/api.json?rss_url=https://www.cnnturk.com/feed/rss/all/news",
-          "https://api.rss2json.com/v1/api.json?rss_url=https://www.haberturk.com/rss",
-          "https://api.rss2json.com/v1/api.json?rss_url=https://www.sozcu.com.tr/feed/",
-          "https://api.rss2json.com/v1/api.json?rss_url=https://www.hurriyet.com.tr/rss/gundem",
-          "https://api.rss2json.com/v1/api.json?rss_url=https://www.sabah.com.tr/rss/gundem.xml",
-          "https://api.rss2json.com/v1/api.json?rss_url=https://www.dha.com.tr/rss",
-          "https://api.rss2json.com/v1/api.json?rss_url=https://www.iha.com.tr/rss/"
-        ];
+    <div class="content">
+        <div class="news-section">
+            <div class="news-title">📌 Güncel Haberler</div>
+            <div class="news-grid" id="newsGrid"></div>
+        </div>
 
-        let allNews = [];
+        <div>
+            <div class="sidebar">
+                <h3>🔥 En Çok Okunanlar</h3>
+                <ul id="popularList" style="line-height:1.6; padding-left:15px;"></ul>
+            </div>
+        </div>
 
-        for (let url of sources) {
-          try {
-            const res = await fetch(url);
-            const data = await res.json();
-            if (data.items) allNews = allNews.concat(data.items);
-          } catch (e) {
-            console.warn("Kaynak hata verdi:", url);
-          }
+    </div>
+
+    <script>
+        async function loadNews() {
+            try {
+                // TRT Haber + NTV Haber RSS kaynakları
+                const sources = [
+                    "https://api.rss2json.com/v1/api.json?rss_url=https://www.trt.net.tr/rss/gundem.rss",
+                    "https://api.rss2json.com/v1/api.json?rss_url=https://www.ntv.com.tr/gundem.rss"
+                ];
+
+                let allNews = [];
+
+                for (let url of sources) {
+                    const res = await fetch(url);
+                    const data = await res.json();
+                    if (data.items) allNews = allNews.concat(data.items);
+                }
+
+                // Haberleri tarihe göre sırala
+                allNews.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+
+                renderSlider(allNews);
+                renderBreaking(allNews);
+                renderNews(allNews);
+                renderPopular(allNews);
+
+            } catch (err) {
+                console.error("Haber Yükleme Hatası:", err);
+            }
         }
 
-        allNews.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+        function renderSlider(list) {
+            const imgBox = document.getElementById("sliderImage");
+            let i = 0;
 
-        allNews = allNews.slice(0, 250);
+            function next() {
+                imgBox.src = list[i].thumbnail || "https://via.placeholder.com/1200x400";
+                i = (i + 1) % list.length;
+            }
 
-        renderSlider(allNews);
-        renderBreaking(allNews);
-        renderNews(allNews);
-        renderPopular(allNews);
+            next();
+            setInterval(next, 5000);
+        }
 
-      } catch (err) {
-        console.error("Haber Hatası:", err);
-      }
-    }
+        function renderBreaking(list) {
+            const text = list.slice(0, 8).map(x => x.title).join("   •   ");
+            document.getElementById("breakingText").innerText = text;
+        }
 
-    function renderSlider(list) {
-      const img = document.getElementById("sliderImage");
-      let i = 0;
-      function next() {
-        img.src = list[i].thumbnail || "https://via.placeholder.com/1200x400";
-        i = (i + 1) % list.length;
-      }
-      next();
-      setInterval(next, 4000);
-    }
+        function renderNews(list) {
+            const grid = document.getElementById("newsGrid");
+            grid.innerHTML = "";
 
-    function renderBreaking(list) {
-      const text = list.slice(0, 20).map(x => x.title).join("   •   ");
-      document.getElementById("breakingText").innerText = text;
-    }
+            list.forEach(item => {
+                const div = document.createElement("div");
+                div.className = "news-card";
 
-    function renderNews(list) {
-      const grid = document.getElementById("newsGrid");
-      grid.innerHTML = "";
-      list.forEach(item => {
-        const div = document.createElement("div");
-        div.className = "news-card";
-        div.innerHTML = `
-          <img src="${item.thumbnail}">
-          <div class="news-card-title">${item.title}</div>
-          <div class="news-card-desc">${item.description.slice(0, 120)}...</div>
-        `;
-        div.onclick = () => window.open(item.link, "_blank");
-        grid.appendChild(div);
-      });
-    }
+                div.innerHTML = `
+                    <img src="${item.thumbnail}">
+                    <div class="news-card-title">${item.title}</div>
+                    <div class="news-card-desc">${item.description.slice(0, 120)}...</div>
+                `;
 
-    function renderPopular(list) {
-      const ul = document.getElementById("popularList");
-      ul.innerHTML = "";
-      list.slice(0, 30).forEach(item => {
-        const li = document.createElement("li");
-        li.innerText = "• " + item.title;
-        li.style.cursor = "pointer";
-        li.onclick = () => window.open(item.link, "_blank");
-        ul.appendChild(li);
-      });
-    }
+                div.onclick = () => window.open(item.link, "_blank");
+                grid.appendChild(div);
+            });
+        }
 
-    // Borsa
-    new TradingView.widget({
-      "container_id": "tradingview_bist",
-      "autosize": true,
-      "symbol": "BIST:XU100",
-      "interval": "15",
-      "timezone": "Europe/Istanbul",
-      "theme": "dark",
-      "style": "1",
-      "locale": "tr",
-      "hide_top_toolbar": true,
-      "hide_legend": true
-    });
+        function renderPopular(list) {
+            const ul = document.getElementById("popularList");
+            ul.innerHTML = "";
 
-    new TradingView.widget({
-      "container_id": "tradingview_usd",
-      "autosize": true,
-      "symbol": "FX_IDC:USDTRY",
-      "interval": "15",
-      "timezone": "Europe/Istanbul",
-      "theme": "dark",
-      "style": "1",
-      "locale": "tr",
-      "hide_top_toolbar": true,
-      "hide_legend": true
-    });
+            list.slice(0, 10).forEach(item => {
+                const li = document.createElement("li");
+                li.innerText = "• " + item.title;
+                li.style.cursor = "pointer";
+                li.onclick = () => window.open(item.link, "_blank");
+                ul.appendChild(li);
+            });
+        }
 
-    new TradingView.widget({
-      "container_id": "tradingview_eur",
-      "autosize": true,
-      "symbol": "FX_IDC:EURTRY",
-      "interval": "15",
-      "timezone": "Europe/Istanbul",
-      "theme": "dark",
-      "style": "1",
-      "locale": "tr",
-      "hide_top_toolbar": true,
-      "hide_legend": true
-    });
-
-    loadNews();
-  </script>
+        loadNews();
+    </script>
 
 </body>
+
 </html>
