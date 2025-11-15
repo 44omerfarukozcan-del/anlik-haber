@@ -63,7 +63,6 @@
       border-bottom: 2px solid #ff5e3a;
     }
 
-    /* --- CANLI ALTIN & DÖVİZ TICKER --- */
     .breaking-news {
       background: #ff3b3b;
       padding: 10px;
@@ -75,7 +74,7 @@
     .breaking-text {
       display: inline-block;
       padding-left: 100%;
-      animation: breaking 18s linear infinite;
+      animation: breaking 15s linear infinite;
     }
 
     @keyframes breaking {
@@ -171,9 +170,8 @@
     <img id="sliderImage" src="https://via.placeholder.com/1200x400?text=Y%C3%BCkleniyor...">
   </div>
 
-  <!-- CANLI ALTIN & DÖVİZ TICKER -->
   <div class="breaking-news">
-    <span id="goldTicker" class="breaking-text">CANLI fiyatlar yükleniyor...</span>
+    <span id="breakingText" class="breaking-text">Son dakika haberleri yükleniyor...</span>
   </div>
 
   <div class="content">
@@ -206,34 +204,6 @@
   <script src="https://s3.tradingview.com/tv.js"></script>
 
   <script>
-    /* ---------------------- CANLI ALTIN & DÖVİZ ------------------------ */
-    async function loadGold() {
-      try {
-        const altinRes = await fetch("https://api.genelpara.com/embed/altin.json");
-        const altin = await altinRes.json();
-
-        const fxRes = await fetch("https://api.genelpara.com/embed/doviz.json");
-        const fx = await fxRes.json();
-
-        const gram = altin["gram.altin"].alis;
-        const ceyrek = altin.ceyrek.alis;
-        const usd = fx.USD.alis;
-        const eur = fx.EUR.alis;
-        const btc = fx.BTC.alis;
-
-        const text = ` CANLI • Gram: ${gram} ₺   • Çeyrek: ${ceyrek} ₺   • USD: ${usd} ₺   • EUR: ${eur} ₺   • BTC: ${btc} ₺ `;
-
-        document.getElementById("goldTicker").innerText = text;
-      } catch (e) {
-        document.getElementById("goldTicker").innerText = "CANLI fiyatlar alınamadı.";
-      }
-    }
-
-    setInterval(loadGold, 5000);
-    loadGold();
-
-
-    /* ---------------------- HABER SİSTEMİ ------------------------ */
     async function loadNews() {
       try {
         const sources = [
@@ -255,18 +225,23 @@
             const res = await fetch(url);
             const data = await res.json();
             if (data.items) allNews = allNews.concat(data.items);
-          } catch (e) { }
+          } catch (e) {
+            console.warn("Kaynak hata verdi:", url);
+          }
         }
 
         allNews.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
-        allNews = allNews.slice(0, 200);
+
+        allNews = allNews.slice(0, 250);
 
         renderSlider(allNews);
         renderBreaking(allNews);
         renderNews(allNews);
         renderPopular(allNews);
 
-      } catch { }
+      } catch (err) {
+        console.error("Haber Hatası:", err);
+      }
     }
 
     function renderSlider(list) {
@@ -281,7 +256,8 @@
     }
 
     function renderBreaking(list) {
-      return; /* artık kullanılmıyor */
+      const text = list.slice(0, 20).map(x => x.title).join("   •   ");
+      document.getElementById("breakingText").innerText = text;
     }
 
     function renderNews(list) {
@@ -306,10 +282,51 @@
       list.slice(0, 30).forEach(item => {
         const li = document.createElement("li");
         li.innerText = "• " + item.title;
+        li.style.cursor = "pointer";
         li.onclick = () => window.open(item.link, "_blank");
         ul.appendChild(li);
       });
     }
+
+    // Borsa
+    new TradingView.widget({
+      "container_id": "tradingview_bist",
+      "autosize": true,
+      "symbol": "BIST:XU100",
+      "interval": "15",
+      "timezone": "Europe/Istanbul",
+      "theme": "dark",
+      "style": "1",
+      "locale": "tr",
+      "hide_top_toolbar": true,
+      "hide_legend": true
+    });
+
+    new TradingView.widget({
+      "container_id": "tradingview_usd",
+      "autosize": true,
+      "symbol": "FX_IDC:USDTRY",
+      "interval": "15",
+      "timezone": "Europe/Istanbul",
+      "theme": "dark",
+      "style": "1",
+      "locale": "tr",
+      "hide_top_toolbar": true,
+      "hide_legend": true
+    });
+
+    new TradingView.widget({
+      "container_id": "tradingview_eur",
+      "autosize": true,
+      "symbol": "FX_IDC:EURTRY",
+      "interval": "15",
+      "timezone": "Europe/Istanbul",
+      "theme": "dark",
+      "style": "1",
+      "locale": "tr",
+      "hide_top_toolbar": true,
+      "hide_legend": true
+    });
 
     loadNews();
   </script>
