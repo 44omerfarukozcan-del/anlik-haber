@@ -190,10 +190,18 @@
         async function loadNews() {
             try {
                 // TRT Haber + NTV Haber RSS kaynakları
-                const sources = [
-                    "https://api.rss2json.com/v1/api.json?rss_url=https://www.trt.net.tr/rss/gundem.rss",
-                    "https://api.rss2json.com/v1/api.json?rss_url=https://www.ntv.com.tr/gundem.rss"
-                ];
+               const sources = [
+  "https://api.rss2json.com/v1/api.json?rss_url=https://www.trt.net.tr/rss/gundem.rss",
+  "https://api.rss2json.com/v1/api.json?rss_url=https://www.ntv.com.tr/gundem.rss",
+  "https://api.rss2json.com/v1/api.json?rss_url=https://www.haberturk.com/rss/manset.xml",
+  "https://api.rss2json.com/v1/api.json?rss_url=https://www.cnnturk.com/feed/rss/all/news",
+  "https://api.rss2json.com/v1/api.json?rss_url=https://www.aa.com.tr/tr/rss/default?cat=guncel",
+  "https://api.rss2json.com/v1/api.json?rss_url=https://www.aa.com.tr/tr/rss/default?cat=ekonomi",
+  "https://api.rss2json.com/v1/api.json?rss_url=https://www.bbc.com/turkce/index.xml",
+  "https://api.rss2json.com/v1/api.json?rss_url=https://www.reutersagency.com/feed/?taxonomy=best-topics&post_type=best",
+  "https://api.rss2json.com/v1/api.json?rss_url=https://www.hurriyet.com.tr/rss/gundem",
+  "https://api.rss2json.com/v1/api.json?rss_url=https://www.milliyet.com.tr/rss/rssNew/gundemRss.xml"
+];
 
                 let allNews = [];
 
