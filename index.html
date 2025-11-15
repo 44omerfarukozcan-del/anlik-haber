@@ -181,7 +181,6 @@
     </div>
 
     <div>
-      <!-- Borsa -->
       <div class="sidebar">
         <h3>📈 Canlı Borsa</h3>
         <div class="tradingview-widget-container" style="margin-bottom:20px;">
@@ -195,7 +194,6 @@
         </div>
       </div>
 
-      <!-- Popüler -->
       <div class="sidebar">
         <h3>🔥 En Çok Okunanlar</h3>
         <ul id="popularList" style="line-height:1.6; padding-left:15px;"></ul>
@@ -203,7 +201,6 @@
     </div>
   </div>
 
-  <!-- TradingView -->
   <script src="https://s3.tradingview.com/tv.js"></script>
 
   <script>
@@ -211,17 +208,31 @@
       try {
         const sources = [
           "https://api.rss2json.com/v1/api.json?rss_url=https://www.trt.net.tr/rss/gundem.rss",
-          "https://api.rss2json.com/v1/api.json?rss_url=https://www.ntv.com.tr/gundem.rss"
+          "https://api.rss2json.com/v1/api.json?rss_url=https://www.ntv.com.tr/gundem.rss",
+          "https://api.rss2json.com/v1/api.json?rss_url=https://www.cnnturk.com/feed/rss/all/news",
+          "https://api.rss2json.com/v1/api.json?rss_url=https://www.haberturk.com/rss",
+          "https://api.rss2json.com/v1/api.json?rss_url=https://www.sozcu.com.tr/feed/",
+          "https://api.rss2json.com/v1/api.json?rss_url=https://www.hurriyet.com.tr/rss/gundem",
+          "https://api.rss2json.com/v1/api.json?rss_url=https://www.sabah.com.tr/rss/gundem.xml",
+          "https://api.rss2json.com/v1/api.json?rss_url=https://www.dha.com.tr/rss",
+          "https://api.rss2json.com/v1/api.json?rss_url=https://www.iha.com.tr/rss/"
         ];
 
         let allNews = [];
+
         for (let url of sources) {
-          const res = await fetch(url);
-          const data = await res.json();
-          if (data.items) allNews = allNews.concat(data.items);
+          try {
+            const res = await fetch(url);
+            const data = await res.json();
+            if (data.items) allNews = allNews.concat(data.items);
+          } catch (e) {
+            console.warn("Kaynak hata verdi:", url);
+          }
         }
 
         allNews.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+
+        allNews = allNews.slice(0, 250);
 
         renderSlider(allNews);
         renderBreaking(allNews);
@@ -229,23 +240,23 @@
         renderPopular(allNews);
 
       } catch (err) {
-        console.error("Haber Yükleme Hatası:", err);
+        console.error("Haber Hatası:", err);
       }
     }
 
     function renderSlider(list) {
-      const imgBox = document.getElementById("sliderImage");
+      const img = document.getElementById("sliderImage");
       let i = 0;
       function next() {
-        imgBox.src = list[i].thumbnail || "https://via.placeholder.com/1200x400";
+        img.src = list[i].thumbnail || "https://via.placeholder.com/1200x400";
         i = (i + 1) % list.length;
       }
       next();
-      setInterval(next, 5000);
+      setInterval(next, 4000);
     }
 
     function renderBreaking(list) {
-      const text = list.slice(0, 8).map(x => x.title).join("   •   ");
+      const text = list.slice(0, 20).map(x => x.title).join("   •   ");
       document.getElementById("breakingText").innerText = text;
     }
 
@@ -268,7 +279,7 @@
     function renderPopular(list) {
       const ul = document.getElementById("popularList");
       ul.innerHTML = "";
-      list.slice(0, 10).forEach(item => {
+      list.slice(0, 30).forEach(item => {
         const li = document.createElement("li");
         li.innerText = "• " + item.title;
         li.style.cursor = "pointer";
@@ -277,7 +288,7 @@
       });
     }
 
-    // Borsa widget’ları
+    // Borsa
     new TradingView.widget({
       "container_id": "tradingview_bist",
       "autosize": true,
