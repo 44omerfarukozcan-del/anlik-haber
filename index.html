@@ -6,9 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 <style>
-/* =========================================================
-   ANLIK HABER – FULL GÖMÜLÜ CSS
-   ========================================================= */
 body {
   margin: 0;
   background: #0b0f1a;
@@ -62,7 +59,7 @@ nav a:hover {
   white-space: nowrap;
 }
 #breakingTicker {
-  animation: ticker 25s linear infinite;
+  animation: ticker 30s linear infinite;
   display: inline-block;
 }
 @keyframes ticker {
@@ -77,7 +74,7 @@ nav a:hover {
   padding: 20px;
 }
 
-/* HABERLER */
+/* ÖNE ÇIKAN HABER */
 #featuredNews {
   background: #141b2f;
   padding: 20px;
@@ -93,6 +90,7 @@ nav a:hover {
   margin-bottom: 12px;
 }
 
+/* HABER LİSTESİ */
 .news-card {
   background: #141b2f;
   border-radius: 10px;
@@ -117,24 +115,61 @@ nav a:hover {
   width: 30%;
 }
 
-/* BORSA */
-#marketBox {
-  background: #141b2f;
-  padding: 15px;
-  border-radius: 12px;
-  margin-bottom: 20px;
+/* =======================
+   GELİŞTİRİLMİŞ BORSA TASARIMI
+=========================*/
+.market-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
 }
 
-.market-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 8px 0;
-  border-bottom: 1px solid #222a42;
+.market-card {
+  background: #1a2338;
+  padding: 12px;
+  border-radius: 10px;
+  color: #fff;
+  transition: 0.25s;
+  border: 1px solid #222c43;
 }
-.market-name { font-size: 14px; }
-.market-price { font-size: 14px; }
-.positive { color: #41ff6b; }
-.negative { color: #ff3b3b; }
+
+.market-card:hover {
+  transform: scale(1.04);
+  border-color: #3e4b6b;
+}
+
+.market-name {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.market-price {
+  margin-top: 6px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.market-change {
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.positive {
+  color: #3bff78;
+}
+
+.negative {
+  color: #ff4d4d;
+}
+
+.flash {
+  animation: flashAnim 0.6s ease;
+}
+
+@keyframes flashAnim {
+  0% { background-color: rgba(255,255,255,0.3); }
+  100% { background-color: transparent; }
+}
 
 /* POPULAR */
 #popularList li {
@@ -197,8 +232,8 @@ footer {
   <aside class="sidebar">
 
     <div id="marketBox">
-      <h3>Canlı Borsa (Finnhub)</h3>
-      <div id="marketList"></div>
+      <h3 style="margin-bottom:12px;">📈 Canlı Borsa</h3>
+      <div id="marketList" class="market-grid"></div>
     </div>
 
     <div id="popularBox">
@@ -215,12 +250,13 @@ footer {
 // =========================================================
 //  GERÇEK HABER API (NewsData.io)
 // =========================================================
+
 const NEWS_API_KEY = "pub_b64510ef0d7a472f803e4d7c5e28e06e";
 
 async function fetchNews() {
     try {
         const url =
-          `https://newsdata.io/api/1/news?apikey=${NEWS_API_KEY}&country=tr&language=tr`;
+          https://newsdata.io/api/1/news?apikey=${NEWS_API_KEY}&country=tr&language=tr;
 
         const res = await fetch(url);
         const data = await res.json();
@@ -238,13 +274,13 @@ async function fetchNews() {
     }
 }
 
-// ----------- Öne Çıkan Haber ----------
+// ----------- Featured ----------
 function renderFeatured(item) {
     if (!item) return;
 
     const img = item.image_url || item.image || "";
     document.getElementById("featuredImg").style.backgroundImage =
-      `url('${img}')`;
+      url('${img}');
 
     document.getElementById("featuredTitle").textContent = item.title || "";
     document.getElementById("featuredDesc").textContent = item.description || "";
@@ -256,7 +292,7 @@ function renderFeatured(item) {
     };
 }
 
-// ----------- Haber Listesi ----------
+// ----------- Haberler ----------
 function renderNews(list) {
     const area = document.getElementById("generalNews");
     area.innerHTML = "";
@@ -280,13 +316,13 @@ function renderNews(list) {
     });
 }
 
-// ----------- Son Dakika Ticker ----------
+// ----------- Son Dakika ----------
 function renderBreaking(list) {
     const titles = list.slice(0, 10).map(x => x.title).join("  •  ");
     document.getElementById("breakingTicker").textContent = titles;
 }
 
-// ----------- En Çok Okunanlar ----------
+// ----------- Popüler ----------
 function renderPopular(list) {
     const ul = document.getElementById("popularList");
     ul.innerHTML = "";
@@ -301,15 +337,15 @@ function renderPopular(list) {
 
 
 // =========================================================
-//  CANLI BORSA – Finnhub.io API
+//  CANLI BORSA – Finnhub Gelişmiş
 // =========================================================
-const FINNHUB_KEY = "d4c70r9r01qoua32qbc0d4c70r9r01qoua32qbcg";
 
-// BIST + Döviz
+const FINNHUB_KEY = "d4c7o9r9r01qoua32qbc0d4c7o9r01qoua32qbcg";
+
 const symbols = [
-    { symbol: "XU100.IS", name: "BIST 100" },
-    { symbol: "USDTRY", name: "Dolar / TL" },
-    { symbol: "EURTRY", name: "Euro / TL" },
+  { symbol: "BIST:XU100", name: "BIST 100" },
+  { symbol: "OANDA:USDTRY", name: "Dolar / TL" },
+  { symbol: "OANDA:EURTRY", name: "Euro / TL" }
 ];
 
 async function fetchMarket() {
@@ -318,9 +354,7 @@ async function fetchMarket() {
 
     for (const item of symbols) {
         try {
-            const url =
-              `https://finnhub.io/api/v1/quote?symbol=${item.symbol}&token=${FINNHUB_KEY}`;
-
+            const url = https://finnhub.io/api/v1/quote?symbol=${item.symbol}&token=${FINNHUB_KEY};
             const res = await fetch(url);
             const data = await res.json();
 
@@ -328,16 +362,30 @@ async function fetchMarket() {
             const prev = data.pc;
             const diff = ((price - prev) / prev) * 100;
 
-            const div = document.createElement("div");
-            div.className = "market-item";
-            div.innerHTML = `
+            const card = document.createElement("div");
+            card.className = "market-card";
+
+            const direction = diff >= 0 ? "▲" : "▼";
+            const colorClass = diff >= 0 ? "positive" : "negative";
+
+            card.innerHTML = `
                 <div class="market-name">${item.name}</div>
-                <div class="market-price ${diff >= 0 ? "positive" : "negative"}">
-                    ${price} (${diff.toFixed(2)}%)
+                <div class="market-price ${colorClass}">
+                    ${price ? price.toFixed(2) : "—"} <span>${direction}</span>
+                </div>
+                <div class="market-change ${colorClass}">
+                    ${diff ? diff.toFixed(2) : "0.00"}%
                 </div>
             `;
 
-            box.appendChild(div);
+            if (card.dataset.lastPrice && card.dataset.lastPrice != price) {
+                card.classList.add("flash");
+                setTimeout(() => card.classList.remove("flash"), 600);
+            }
+
+            card.dataset.lastPrice = price;
+
+            box.appendChild(card);
 
         } catch (err) {
             console.error("BORSA API HATASI:", err);
@@ -345,16 +393,17 @@ async function fetchMarket() {
     }
 }
 
+
 // =========================================================
 //  OTOMATİK YENİLEME
 // =========================================================
 fetchNews();
 fetchMarket();
 
-setInterval(fetchNews, 5 * 60 * 1000);
-setInterval(fetchMarket, 30 * 1000);
+setInterval(fetchNews, 5 * 60 * 1000);     // 5 dakikada bir haber
+setInterval(fetchMarket, 30 * 1000);       // 30 saniyede bir borsa
 
 </script>
 
 </body>
-  </html>
+</html>
