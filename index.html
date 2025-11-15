@@ -51,6 +51,14 @@
             color: #ff5e3a;
         }
 
+        /* Ticker */
+        .ticker-wrap {
+            background: #11131a;
+            border-top: 2px solid #ff3b3b;
+            border-bottom: 2px solid #ff3b3b;
+            padding: 4px 0;
+        }
+
         .slider {
             width: 100%;
             height: 250px;
@@ -128,18 +136,6 @@
             object-fit: cover;
         }
 
-        .news-card-title {
-            font-weight: 700;
-            font-size: 18px;
-            margin-top: 8px;
-        }
-
-        .news-card-desc {
-            font-size: 14px;
-            color: #bfc3cc;
-            margin-top: 5px;
-        }
-
         .sidebar {
             background: #151821;
             padding: 18px;
@@ -151,9 +147,9 @@
 
 <body>
 
+    <!-- NAVBAR -->
     <div class="navbar">
         <div class="logo-text">Anlık <span>Haber</span></div>
-
         <div class="menu">
             <a href="#">Gündem</a>
             <a href="#">Ekonomi</a>
@@ -163,75 +159,102 @@
         </div>
     </div>
 
+    <!-- TICKER -->
+    <div class="ticker-wrap">
+        <div class="tradingview-widget-container">
+            <div class="tradingview-widget-container__widget"></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js">
+            {
+                "symbols": [
+                    { "proName": "BIST:XU100", "title": "BIST 100" },
+                    { "proName": "FX:USDTRY", "title": "Dolar/TL" },
+                    { "proName": "FX:EURTRY", "title": "Euro/TL" },
+                    { "proName": "FX:XAUTRYG", "title": "Altın/GR" }
+                ],
+                "colorTheme": "dark",
+                "isTransparent": false,
+                "displayMode": "adaptive",
+                "locale": "tr"
+            }
+            </script>
+        </div>
+    </div>
+
+    <!-- SLIDER -->
     <div class="slider">
         <img id="sliderImage" src="https://via.placeholder.com/1200x400?text=Y%C3%BCkleniyor...">
     </div>
 
+    <!-- BREAKING -->
     <div class="breaking-news">
         <span id="breakingText" class="breaking-text">Son dakika haberleri yükleniyor...</span>
     </div>
 
+    <!-- CONTENT -->
     <div class="content">
-        <div class="news-section">
+        <div>
             <div class="news-title">📌 Güncel Haberler</div>
             <div class="news-grid" id="newsGrid"></div>
         </div>
 
         <div>
             <div class="sidebar">
+                <h3>📈 Canlı Borsa Grafik</h3>
+                <div id="tv_bist" style="height:220px; margin-bottom:20px;"></div>
+                <div id="tv_usd" style="height:220px; margin-bottom:20px;"></div>
+                <div id="tv_eur" style="height:220px;"></div>
+            </div>
+
+            <div class="sidebar">
                 <h3>🔥 En Çok Okunanlar</h3>
                 <ul id="popularList" style="line-height:1.6; padding-left:15px;"></ul>
             </div>
         </div>
-
     </div>
 
+    <script src="https://s3.tradingview.com/tv.js"></script>
+
     <script>
+        const API_KEY = "BURAYA_SENİN_TOKENİNİ_YAZ"; // 🔴 SADECE BURAYI SEN DOLDURACAKSIN
+
         async function loadNews() {
             try {
-                // TRT Haber + NTV Haber RSS kaynakları
-                const sources = [
-                    "https://api.rss2json.com/v1/api.json?rss_url=https://www.trt.net.tr/rss/gundem.rss",
-                    "https://api.rss2json.com/v1/api.json?rss_url=https://www.ntv.com.tr/gundem.rss"
-                ];
+                const res = await fetch(
+                    https://api.currentsapi.services/v1/latest-news?apiKey=${API_KEY}&language=tr
+                );
+                const data = await res.json();
 
-                let allNews = [];
+                const list = data.news || [];
 
-                for (let url of sources) {
-                    const res = await fetch(url);
-                    const data = await res.json();
-                    if (data.items) allNews = allNews.concat(data.items);
-                }
-
-                // Haberleri tarihe göre sırala
-                allNews.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
-
-                renderSlider(allNews);
-                renderBreaking(allNews);
-                renderNews(allNews);
-                renderPopular(allNews);
+                renderSlider(list);
+                renderBreaking(list);
+                renderNews(list);
+                renderPopular(list);
 
             } catch (err) {
-                console.error("Haber Yükleme Hatası:", err);
+                console.error("API Hatası:", err);
             }
         }
 
         function renderSlider(list) {
-            const imgBox = document.getElementById("sliderImage");
+            const img = document.getElementById("sliderImage");
             let i = 0;
 
             function next() {
-                imgBox.src = list[i].thumbnail || "https://via.placeholder.com/1200x400";
+                img.src =
+                    list[i].image ||
+                    list[i].image_url ||
+                    "https://via.placeholder.com/1200x400";
                 i = (i + 1) % list.length;
             }
 
             next();
-            setInterval(next, 5000);
+            setInterval(next, 4000);
         }
 
         function renderBreaking(list) {
-            const text = list.slice(0, 8).map(x => x.title).join("   •   ");
-            document.getElementById("breakingText").innerText = text;
+            document.getElementById("breakingText").innerText =
+                list.slice(0, 8).map(n => n.title).join("  •  ");
         }
 
         function renderNews(list) {
@@ -243,12 +266,11 @@
                 div.className = "news-card";
 
                 div.innerHTML = `
-                    <img src="${item.thumbnail}">
+                    <img src="${item.image || item.image_url || 'https://via.placeholder.com/300'}">
                     <div class="news-card-title">${item.title}</div>
-                    <div class="news-card-desc">${item.description.slice(0, 120)}...</div>
                 `;
 
-                div.onclick = () => window.open(item.link, "_blank");
+                div.onclick = () => window.open(item.url, "_blank");
                 grid.appendChild(div);
             });
         }
@@ -259,16 +281,46 @@
 
             list.slice(0, 10).forEach(item => {
                 const li = document.createElement("li");
-                li.innerText = "• " + item.title;
+                li.textContent = "• " + item.title;
                 li.style.cursor = "pointer";
-                li.onclick = () => window.open(item.link, "_blank");
+                li.onclick = () => window.open(item.url, "_blank");
                 ul.appendChild(li);
             });
         }
 
         loadNews();
+
+        /* TradingView Graphs */
+        new TradingView.widget({
+            autosize: true,
+            symbol: "BIST:XU100",
+            interval: "60",
+            container_id: "tv_bist",
+            theme: "dark",
+            locale: "tr",
+            hide_top_toolbar: true
+        });
+
+        new TradingView.widget({
+            autosize: true,
+            symbol: "FX:USDTRY",
+            interval: "60",
+            container_id: "tv_usd",
+            theme: "dark",
+            locale: "tr",
+            hide_top_toolbar: true
+        });
+
+        new TradingView.widget({
+            autosize: true,
+            symbol: "FX:EURTRY",
+            interval: "60",
+            container_id: "tv_eur",
+            theme: "dark",
+            locale: "tr",
+            hide_top_toolbar: true
+        });
     </script>
 
 </body>
-
 </html>
