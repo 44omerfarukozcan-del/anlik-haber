@@ -1,376 +1,409 @@
 <!DOCTYPE html>
 <html lang="tr">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anlık Haber - Son Dakika & Canlı Borsa</title>
+<meta charset="UTF-8" />
+<title>Anlık Haber – Son Dakika, Canlı Borsa, Gündem</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+body {
+  margin: 0;
+  background: #0b0f1a;
+  font-family: Arial, sans-serif;
+  color: #fff;
+}
 
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
-            background: #0f111a;
-            color: #fff;
-        }
+/* HEADER */
+header {
+  background: #111627;
+  padding: 15px 25px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
 
-        /* NAVBAR */
-        .navbar {
-            width: 100%;
-            padding: 18px 20px;
-            background: #151821;
-            border-bottom: 2px solid #ff3b3b;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 999;
-        }
+.logo {
+  font-size: 28px;
+  font-weight: bold;
+  background: linear-gradient(90deg, #ff3b3b, #ff9a3b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
-        .logo-text {
-            font-size: 28px;
-            font-weight: 800;
-            color: #ff5e3a;
-        }
+nav a {
+  color: #aab3d0;
+  margin-left: 15px;
+  text-decoration: none;
+  font-size: 14px;
+}
+nav a:hover {
+  color: #fff;
+}
 
-        .logo-text span {
-            color: #fff;
-        }
+.live-tag {
+  background: #ff3b3b;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+}
 
-        .menu a {
-            margin-left: 20px;
-            text-decoration: none;
-            color: #ddd;
-            font-weight: 500;
-        }
+/* BREAKING NEWS */
+#breakingBar {
+  background: #ff3b3b;
+  padding: 8px 10px;
+  font-weight: bold;
+  overflow: hidden;
+  white-space: nowrap;
+}
+#breakingTicker {
+  animation: ticker 30s linear infinite;
+  display: inline-block;
+}
+@keyframes ticker {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-250%); }
+}
 
-        .menu a:hover {
-            color: #ff5e3a;
-        }
+/* LAYOUT */
+.container {
+  display: flex;
+  gap: 25px;
+  padding: 20px;
+}
 
-        /* SLIDER */
-        .slider {
-            width: 100%;
-            height: 250px;
-            overflow: hidden;
-            margin-top: 10px;
-        }
+/* ÖNE ÇIKAN HABER */
+#featuredNews {
+  background: #141b2f;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+}
 
-        .slider img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            border-bottom: 2px solid #ff5e3a;
-        }
+.featured-img {
+  width: 100%;
+  height: 260px;
+  background-size: cover;
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
 
-        /* BREAKING NEWS */
-        .breaking-news {
-            background: #ff3b3b;
-            padding: 10px;
-            font-weight: 700;
-            overflow: hidden;
-            white-space: nowrap;
-        }
+/* HABER LİSTESİ */
+.news-card {
+  background: #141b2f;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.news-card:hover {
+  transform: scale(1.03);
+}
+.news-thumb {
+  height: 150px;
+  background-size: cover;
+  background-position: center;
+}
+.news-body {
+  padding: 12px;
+}
 
-        .breaking-text {
-            display: inline-block;
-            padding-left: 100%;
-            animation: breaking 15s linear infinite;
-        }
+/* SIDEBAR */
+.sidebar {
+  width: 30%;
+}
 
-        @keyframes breaking {
-            from {
-                transform: translateX(0);
-            }
+/* =======================
+   GELİŞTİRİLMİŞ BORSA TASARIMI
+=========================*/
+.market-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+}
 
-            to {
-                transform: translateX(-100%);
-            }
-        }
+.market-card {
+  background: #1a2338;
+  padding: 12px;
+  border-radius: 10px;
+  color: #fff;
+  transition: 0.25s;
+  border: 1px solid #222c43;
+}
 
-        /* CONTENT GRID */
-        .content {
-            padding: 20px;
-        }
+.market-card:hover {
+  transform: scale(1.04);
+  border-color: #3e4b6b;
+}
 
-        @media(min-width: 900px) {
-            .content {
-                display: grid;
-                grid-template-columns: 2fr 1fr;
-                gap: 20px;
-            }
-        }
+.market-name {
+  font-size: 14px;
+  font-weight: bold;
+}
 
-        /* NEWS GRID */
-        .news-section {}
+.market-price {
+  margin-top: 6px;
+  font-size: 18px;
+  font-weight: bold;
+}
 
-        .news-title {
-            font-size: 22px;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
+.market-change {
+  font-size: 14px;
+  margin-top: 4px;
+}
 
-        .news-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 18px;
-        }
+.positive {
+  color: #3bff78;
+}
 
-        .news-card {
-            background: #151821;
-            padding: 14px;
-            border-radius: 10px;
-            border: 1px solid #1f2533;
-            transition: .3s;
-            cursor: pointer;
-        }
+.negative {
+  color: #ff4d4d;
+}
 
-        .news-card:hover {
-            transform: scale(1.03);
-            border-color: #ff5e3a;
-        }
+.flash {
+  animation: flashAnim 0.6s ease;
+}
 
-        .news-card img {
-            width: 100%;
-            height: 180px;
-            border-radius: 8px;
-            object-fit: cover;
-        }
+@keyframes flashAnim {
+  0% { background-color: rgba(255,255,255,0.3); }
+  100% { background-color: transparent; }
+}
 
-        .news-card-title {
-            font-weight: 700;
-            font-size: 18px;
-            margin-top: 8px;
-        }
+/* POPULAR */
+#popularList li {
+  padding: 6px 0;
+  cursor: pointer;
+  list-style: none;
+  color: #aab3d0;
+}
+#popularList li:hover {
+  color: #fff;
+}
 
-        .news-card-desc {
-            font-size: 14px;
-            color: #bfc3cc;
-            margin-top: 5px;
-        }
-
-        /* SIDEBAR */
-        .sidebar {
-            background: #151821;
-            padding: 18px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-    </style>
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 15px;
+  margin-top: 40px;
+  background: #111627;
+  color: #aab3d0;
+  font-size: 14px;
+}
+</style>
 </head>
 
 <body>
 
-    <!-- NAVBAR -->
-    <div class="navbar">
-        <div class="logo-text">Anlık <span>Haber</span></div>
+<header>
+  <div class="logo">Anlık Haber</div>
+  <nav>
+    <a href="#">Gündem</a>
+    <a href="#">Ekonomi</a>
+    <a href="#">Spor</a>
+    <a href="#">Teknoloji</a>
+  </nav>
+  <div class="live-tag">CANLI</div>
+</header>
 
-        <div class="menu">
-            <a href="#">Gündem</a>
-            <a href="#">Ekonomi</a>
-            <a href="#">Spor</a>
-            <a href="#">Teknoloji</a>
-            <a style="background:#ff3b3b; padding:6px 12px; border-radius:6px;">CANLI</a>
-        </div>
+<div id="breakingBar">
+  <span id="breakingTicker">Yükleniyor...</span>
+</div>
+
+<div class="container">
+
+  <div style="width: 70%;">
+    
+    <section id="featuredNews">
+      <div id="featuredImg" class="featured-img"></div>
+      <h2 id="featuredTitle"></h2>
+      <p id="featuredDesc"></p>
+      <span id="featuredDate"></span>
+    </section>
+
+    <h2>Güncel Haberler</h2>
+    <div id="generalNews"
+      style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:15px;">
     </div>
 
-    <!-- TICKER BAR -->
-    <div class="tradingview-widget-container">
-        <div class="tradingview-widget-container__widget"></div>
-        <script type="text/javascript"
-            src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
-                {
-                    "symbols": [
-                        { "proName": "BIST:XU100", "title": "BIST 100" },
-                        { "proName": "FX_IDC:USDTRY", "title": "Dolar/TL" },
-                        { "proName": "FX_IDC:EURTRY", "title": "Euro/TL" }
-                    ],
-                    "colorTheme": "dark",
-                    "isTransparent": false,
-                    "displayMode": "adaptive",
-                    "locale": "tr"
-                }
-        </script>
+  </div>
+
+  <aside class="sidebar">
+
+    <div id="marketBox">
+      <h3 style="margin-bottom:12px;">📈 Canlı Borsa</h3>
+      <div id="marketList" class="market-grid"></div>
     </div>
 
-    <!-- SLIDER -->
-    <div class="slider">
-        <img id="sliderImage" src="https://via.placeholder.com/1200x400?text=Yükleniyor">
+    <div id="popularBox">
+      <h3>En Çok Okunanlar</h3>
+      <ul id="popularList"></ul>
     </div>
 
-    <!-- BREAKING -->
-    <div class="breaking-news">
-        <span id="breakingText" class="breaking-text">Son dakika haberleri yükleniyor...</span>
-    </div>
+  </aside>
 
-    <!-- CONTENT -->
-    <div class="content">
+</div>
 
-        <!-- NEWS -->
-        <div class="news-section">
-            <div class="news-title">📌 Güncel Haberler</div>
-            <div class="news-grid" id="newsGrid"></div>
-        </div>
 
-        <!-- SIDEBAR -->
-        <div>
+<script>
+// =========================================================
+//  GERÇEK HABER API (NewsData.io)
+// =========================================================
 
-            <!-- Borsa -->
-            <div class="sidebar">
-                <h3>📈 Canlı Borsa</h3>
+const NEWS_API_KEY = "pub_b64510ef0d7a472f803e4d7c5e28e06e";
 
-                <div class="tradingview-widget-container" style="margin-bottom:20px;">
-                    <div id="tradingview_bist" style="height: 240px;"></div>
-                </div>
+async function fetchNews() {
+    try {
+        const url =
+          https://newsdata.io/api/1/news?apikey=${NEWS_API_KEY}&country=tr&language=tr;
 
-                <div class="tradingview-widget-container" style="margin-bottom:20px;">
-                    <div id="tradingview_usd" style="height: 240px;"></div>
-                </div>
+        const res = await fetch(url);
+        const data = await res.json();
+        const list = data.results || [];
 
-                <div class="tradingview-widget-container">
-                    <div id="tradingview_eur" style="height: 240px;"></div>
-                </div>
+        renderFeatured(list[0]);
+        renderNews(list);
+        renderBreaking(list);
+        renderPopular(list);
+
+    } catch (err) {
+        console.error("HABER API HATASI:", err);
+        document.getElementById("breakingTicker").textContent =
+          "Haberler yüklenemedi.";
+    }
+}
+
+// ----------- Featured ----------
+function renderFeatured(item) {
+    if (!item) return;
+
+    const img = item.image_url || item.image || "";
+    document.getElementById("featuredImg").style.backgroundImage =
+      url('${img}');
+
+    document.getElementById("featuredTitle").textContent = item.title || "";
+    document.getElementById("featuredDesc").textContent = item.description || "";
+    document.getElementById("featuredDate").textContent =
+      new Date(item.pubDate).toLocaleString("tr-TR");
+
+    document.getElementById("featuredNews").onclick = () => {
+        if (item.link) window.open(item.link, "_blank");
+    };
+}
+
+// ----------- Haberler ----------
+function renderNews(list) {
+    const area = document.getElementById("generalNews");
+    area.innerHTML = "";
+
+    list.forEach(item => {
+        const img = item.image_url || item.image || "https://via.placeholder.com/300x200?text=Haber";
+
+        const card = document.createElement("div");
+        card.className = "news-card";
+        card.innerHTML = `
+            <div class="news-thumb" style="background-image:url('${img}')"></div>
+            <div class="news-body">
+                <div class="news-title">${item.title || ""}</div>
+                <div class="news-summary">${item.description || ""}</div>
+                <div class="news-meta">${new Date(item.pubDate).toLocaleString("tr-TR")}</div>
             </div>
+        `;
+        card.onclick = () => window.open(item.link, "_blank");
 
-            <!-- Popüler -->
-            <div class="sidebar">
-                <h3>🔥 En Çok Okunanlar</h3>
-                <ul id="popularList" style="line-height:1.6; padding-left:15px;"></ul>
-            </div>
+        area.appendChild(card);
+    });
+}
 
-        </div>
+// ----------- Son Dakika ----------
+function renderBreaking(list) {
+    const titles = list.slice(0, 10).map(x => x.title).join("  •  ");
+    document.getElementById("breakingTicker").textContent = titles;
+}
 
-    </div>
+// ----------- Popüler ----------
+function renderPopular(list) {
+    const ul = document.getElementById("popularList");
+    ul.innerHTML = "";
 
-    <!-- TRADINGVIEW SCRIPT -->
-    <script src="https://s3.tradingview.com/tv.js"></script>
+    list.slice(0, 5).forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = item.title;
+        li.onclick = () => window.open(item.link, "_blank");
+        ul.appendChild(li);
+    });
+}
 
-    <!-- API + SLIDER + HABER SCRIPT -->
-    <script>
-        const NEWS_API_KEY = "pub_b64510ef0d7a472f803e4d7c5e28e06e";
 
-        async function loadNews() {
-            try {
-                const res = await fetch(https://newsdata.io/api/1/news?apikey=${NEWS_API_KEY}&country=tr&language=tr);
-                const data = await res.json();
-                const list = data.results || [];
+// =========================================================
+//  CANLI BORSA – Finnhub Gelişmiş
+// =========================================================
 
-                renderSlider(list);
-                renderBreaking(list);
-                renderNews(list);
-                renderPopular(list);
+const FINNHUB_KEY = "d4c7o9r9r01qoua32qbc0d4c7o9r01qoua32qbcg";
 
-            } catch (err) {
-                console.error("Haber API Hatası:", err);
+const symbols = [
+  { symbol: "BIST:XU100", name: "BIST 100" },
+  { symbol: "OANDA:USDTRY", name: "Dolar / TL" },
+  { symbol: "OANDA:EURTRY", name: "Euro / TL" }
+];
+
+async function fetchMarket() {
+    const box = document.getElementById("marketList");
+    box.innerHTML = "";
+
+    for (const item of symbols) {
+        try {
+            const url = https://finnhub.io/api/v1/quote?symbol=${item.symbol}&token=${FINNHUB_KEY};
+            const res = await fetch(url);
+            const data = await res.json();
+
+            const price = data.c;
+            const prev = data.pc;
+            const diff = ((price - prev) / prev) * 100;
+
+            const card = document.createElement("div");
+            card.className = "market-card";
+
+            const direction = diff >= 0 ? "▲" : "▼";
+            const colorClass = diff >= 0 ? "positive" : "negative";
+
+            card.innerHTML = `
+                <div class="market-name">${item.name}</div>
+                <div class="market-price ${colorClass}">
+                    ${price ? price.toFixed(2) : "—"} <span>${direction}</span>
+                </div>
+                <div class="market-change ${colorClass}">
+                    ${diff ? diff.toFixed(2) : "0.00"}%
+                </div>
+            `;
+
+            if (card.dataset.lastPrice && card.dataset.lastPrice != price) {
+                card.classList.add("flash");
+                setTimeout(() => card.classList.remove("flash"), 600);
             }
+
+            card.dataset.lastPrice = price;
+
+            box.appendChild(card);
+
+        } catch (err) {
+            console.error("BORSA API HATASI:", err);
         }
+    }
+}
 
-        /* Slider */
-        function renderSlider(list) {
-            const imgBox = document.getElementById("sliderImage");
-            let index = 0;
 
-            function next() {
-                const img = list[index]?.image_url || list[index]?.image || "https://via.placeholder.com/1200x400";
-                imgBox.src = img;
-                index = (index + 1) % list.length;
-            }
+// =========================================================
+//  OTOMATİK YENİLEME
+// =========================================================
+fetchNews();
+fetchMarket();
 
-            next();
-            setInterval(next, 6000);
-        }
+setInterval(fetchNews, 5 * 60 * 1000);     // 5 dakikada bir haber
+setInterval(fetchMarket, 30 * 1000);       // 30 saniyede bir borsa
 
-        /* Breaking */
-        function renderBreaking(list) {
-            const text = list.slice(0, 6).map(x => x.title).join("   •   ");
-            document.getElementById("breakingText").innerText = text;
-        }
-
-        /* News Grid */
-        function renderNews(list) {
-            const grid = document.getElementById("newsGrid");
-            grid.innerHTML = "";
-
-            list.forEach(item => {
-                const img = item.image_url || item.image || "https://via.placeholder.com/300x200";
-                const div = document.createElement("div");
-                div.className = "news-card";
-
-                div.innerHTML = `
-                    <img src="${img}">
-                    <div class="news-card-title">${item.title}</div>
-                    <div class="news-card-desc">${item.description || ""}</div>
-                `;
-
-                div.onclick = () => window.open(item.link, "_blank");
-                grid.appendChild(div);
-            });
-        }
-
-        /* Popular */
-        function renderPopular(list) {
-            const ul = document.getElementById("popularList");
-            ul.innerHTML = "";
-
-            list.slice(0, 8).forEach(item => {
-                const li = document.createElement("li");
-                li.innerText = "• " + item.title;
-                li.onclick = () => window.open(item.link, "_blank");
-                li.style.cursor = "pointer";
-                ul.appendChild(li);
-            });
-        }
-
-        loadNews();
-
-        /* TradingView Widgets */
-
-        new TradingView.widget({
-            "container_id": "tradingview_bist",
-            "autosize": true,
-            "symbol": "BIST:XU100",
-            "interval": "15",
-            "timezone": "Europe/Istanbul",
-            "theme": "dark",
-            "style": "1",
-            "locale": "tr",
-            "hide_top_toolbar": true,
-            "hide_legend": true
-        });
-
-        new TradingView.widget({
-            "container_id": "tradingview_usd",
-            "autosize": true,
-            "symbol": "FX_IDC:USDTRY",
-            "interval": "15",
-            "timezone": "Europe/Istanbul",
-            "theme": "dark",
-            "style": "1",
-            "locale": "tr",
-            "hide_top_toolbar": true,
-            "hide_legend": true
-        });
-
-        new TradingView.widget({
-            "container_id": "tradingview_eur",
-            "autosize": true,
-            "symbol": "FX_IDC:EURTRY",
-            "interval": "15",
-            "timezone": "Europe/Istanbul",
-            "theme": "dark",
-            "style": "1",
-            "locale": "tr",
-            "hide_top_toolbar": true,
-            "hide_legend": true
-        });
-
-    </script>
+</script>
 
 </body>
-
 </html>
