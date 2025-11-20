@@ -1,276 +1,224 @@
 <!DOCTYPE html>
 <html lang="tr">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anlık Haber - Son Dakika & Canlı Borsa</title>
+<meta charset="UTF-8">
+<title>Belinay Hanım ❤</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+    body {
+        margin: 0;
+        overflow: hidden;
+        background: #000;
+        font-family: 'Arial', sans-serif;
+    }
 
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
-            background: #0f111a;
-            color: #fff;
-        }
+    /* Başlangıç ekranı */
+    #startScreen {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #ff0099, #6600ff);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        color: white;
+        font-size: 32px;
+        cursor: pointer;
+        text-shadow: 0 0 15px white;
+        z-index: 10;
+    }
 
-        .navbar {
-            width: 100%;
-            padding: 18px 20px;
-            background: #151821;
-            border-bottom: 2px solid #ff3b3b;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 999;
-        }
+    #startScreen button {
+        margin-top: 20px;
+        padding: 12px 25px;
+        font-size: 22px;
+        border: none;
+        background: white;
+        color: #ff0099;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: bold;
+        box-shadow: 0 0 15px white;
+    }
 
-        .logo-text {
-            font-size: 28px;
-            font-weight: 800;
-            color: #ff5e3a;
-        }
+    /* Hareketli neon arka plan */
+    @keyframes neonBg {
+        0% { background-color: #11001d; }
+        25% { background-color: #1a0030; }
+        50% { background-color: #260040; }
+        75% { background-color: #1a0030; }
+        100% { background-color: #11001d; }
+    }
+    body {
+        animation: neonBg 6s infinite alternate;
+    }
 
-        .logo-text span {
-            color: #fff;
-        }
+    /* Sis / duman efekti */
+    .fog {
+        position: absolute;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,0,150,0.25) 0%, rgba(0,0,0,0) 70%);
+        animation: fogMove 12s infinite alternate;
+        pointer-events: none;
+    }
 
-        .menu a {
-            margin-left: 20px;
-            text-decoration: none;
-            color: #ddd;
-            font-weight: 500;
-        }
+    @keyframes fogMove {
+        0% { transform: translate(-10%, -10%); }
+        100% { transform: translate(-30%, -30%); }
+    }
 
-        .menu a:hover {
-            color: #ff5e3a;
-        }
+    /* Neon kalpler */
+    .heart {
+        position: absolute;
+        color: #ff2bdc;
+        text-shadow:
+            0 0 10px #ff2bdc,
+            0 0 25px #ff2bdc,
+            0 0 45px #ff2bdc;
+        animation: fall 3.8s linear forwards;
+    }
 
-        .slider {
-            width: 100%;
-            height: 250px;
-            overflow: hidden;
-        }
+    @keyframes fall {
+        0% { transform: translateY(-150px) scale(2); opacity: 1; }
+        100% { transform: translateY(900px) scale(0.3); opacity: 0; }
+    }
 
-        .slider img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            border-bottom: 2px solid #ff5e3a;
-        }
+    /* Tıklanınca patlayan kalp */
+    @keyframes pop {
+        0% { transform: scale(0); opacity: 1; }
+        100% { transform: scale(4); opacity: 0; }
+    }
+    .popHeart {
+        position: absolute;
+        color: #ff66dd;
+        text-shadow: 0 0 20px #ff66dd;
+        animation: pop 0.6s ease-out forwards;
+        font-size: 45px;
+        pointer-events: none;
+    }
 
-        .breaking-news {
-            background: #ff3b3b;
-            padding: 10px;
-            font-weight: 700;
-            overflow: hidden;
-            white-space: nowrap;
-        }
+    /* Uçuşan kelebek */
+    .butterfly {
+        position: absolute;
+        font-size: 30px;
+        animation: fly 6s linear;
+    }
 
-        .breaking-text {
-            display: inline-block;
-            padding-left: 100%;
-            animation: breaking 55s linear infinite;
-        }
+    @keyframes fly {
+        0% { transform: translateX(-50px) translateY(0); }
+        100% { transform: translateX(120vw) translateY(-50vh); }
+    }
 
-        @keyframes breaking {
-            from { transform: translateX(0); }
-            to { transform: translateX(-100%); }
-        }
+    /* Yazı makinesi + neon */
+    #message {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        font-size: 40px;
+        white-space: nowrap;
+        color: #ff7de9;
+        opacity: 0;
+        text-shadow:
+            0 0 8px #ff61f7,
+            0 0 30px #ff1ac7,
+            0 0 55px #ff0ec2;
+        animation: fadeIn 2s forwards 4.5s;
+    }
 
-        .content {
-            padding: 20px;
-        }
+    @keyframes fadeIn {
+        100% { opacity: 1; }
+    }
 
-        @media(min-width: 900px) {
-            .content {
-                display: grid;
-                grid-template-columns: 2fr 1fr;
-                gap: 20px;
-            }
-        }
+    /* Parlayan titreşen Belinay */
+    .shine {
+        animation: shineAnim 1s infinite alternate;
+    }
 
-        .news-title {
-            font-size: 22px;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-
-        .news-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 18px;
-        }
-
-        .news-card {
-            background: #151821;
-            padding: 14px;
-            border-radius: 10px;
-            border: 1px solid #1f2533;
-            transition: .3s;
-            cursor: pointer;
-        }
-
-        .news-card:hover {
-            transform: scale(1.03);
-            border-color: #ff5e3a;
-        }
-
-        .news-card img {
-            width: 100%;
-            height: 180px;
-            border-radius: 8px;
-            object-fit: cover;
-        }
-
-        .news-card-title {
-            font-weight: 700;
-            font-size: 18px;
-            margin-top: 8px;
-        }
-
-        .news-card-desc {
-            font-size: 14px;
-            color: #bfc3cc;
-            margin-top: 5px;
-        }
-
-        .sidebar {
-            background: #151821;
-            padding: 18px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-    </style>
+    @keyframes shineAnim {
+        0% { text-shadow: 0 0 10px #ff99ff; }
+        100% { text-shadow: 0 0 25px #ff00ff; }
+    }
+</style>
 </head>
 
 <body>
 
-    <div class="navbar">
-        <div class="logo-text">Anlık <span>Haber</span></div>
+<!-- Başlangıç ekranı -->
+<div id="startScreen">
+    Sürpriz için hazır mısınız? 💖  
+    <button>Tıkla ve Başlat</button>
+</div>
 
-        
-            <a style="background:#ff3b3b; padding:6px 12px; border-radius:6px;">CANLI</a>
-        </div>
-    </div>
+<!-- Sis efekti -->
+<div class="fog"></div>
 
-    <div class="slider">
-        <img id="sliderImage" src="https://via.placeholder.com/1200x400?text=Y%C3%BCkleniyor...">
-    </div>
+<!-- Müzik -->
+<audio id="music" loop>
+    <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Monplaisir/LOVEMAKIN/Monplaisir_-_03_-_Kiss_Forever.mp3" type="audio/mpeg">
+</audio>
 
-    <div class="breaking-news">
-        <span id="breakingText" class="breaking-text">Son dakika haberleri yükleniyor...</span>
-    </div>
+<div id="message"></div>
 
-    <div class="content">
-        <div class="news-section">
-            <div class="news-title">📌 Güncel Haberler</div>
-            <div class="news-grid" id="newsGrid"></div>
-        </div>
+<script>
 
-            <div class="sidebar">
-                <h3>🔥 En Çok Okunanlar</h3>
-                <ul id="popularList" style="line-height:1.6; padding-left:15px;"></ul>
-            </div>
-        </div>
+document.getElementById("startScreen").onclick = function() {
+    this.style.display = "none";
+    document.getElementById("music").play();
+};
 
-    </div>
+/* Kalp yağmuru */
+setInterval(() => {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "💖";
+    heart.style.left = Math.random() * window.innerWidth + "px";
+    heart.style.fontSize = (30 + Math.random() * 60) + "px";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 4000);
+}, 120);
 
-    <script>
-        async function loadNews() {
-            try {
-                // TRT Haber + NTV Haber RSS kaynakları
-               const sources = [
-  "https://api.rss2json.com/v1/api.json?rss_url=https://www.trt.net.tr/rss/gundem.rss",
-  "https://api.rss2json.com/v1/api.json?rss_url=https://www.ntv.com.tr/gundem.rss",
-  "https://api.rss2json.com/v1/api.json?rss_url=https://www.haberturk.com/rss/manset.xml",
-  "https://api.rss2json.com/v1/api.json?rss_url=https://www.aa.com.tr/tr/rss/default?cat=guncel",
-  "https://api.rss2json.com/v1/api.json?rss_url=https://www.aa.com.tr/tr/rss/default?cat=ekonomi",
-  "https://api.rss2json.com/v1/api.json?rss_url=https://www.bbc.com/turkce/index.xml",
-  "https://api.rss2json.com/v1/api.json?rss_url=https://www.reutersagency.com/feed/?taxonomy=best-topics&post_type=best",
-  "https://api.rss2json.com/v1/api.json?rss_url=https://www.hurriyet.com.tr/rss/gundem",
-  "https://api.rss2json.com/v1/api.json?rss_url=https://www.milliyet.com.tr/rss/rssNew/gundemRss.xml"
-];
+/* Tıklayınca patlayan kalp */
+document.addEventListener("click", (e)=>{
+    const pop = document.createElement("div");
+    pop.classList.add("popHeart");
+    pop.innerHTML = "💗";
+    pop.style.left = e.clientX + "px";
+    pop.style.top = e.clientY + "px";
+    document.body.appendChild(pop);
+    setTimeout(() => pop.remove(), 600);
+});
 
-                let allNews = [];
+/* Uçuşan kelebekler */
+setInterval(() => {
+    const b = document.createElement("div");
+    b.classList.add("butterfly");
+    b.innerHTML = "🦋";
+    b.style.left = "-50px";
+    b.style.top = Math.random() * window.innerHeight + "px";
+    document.body.appendChild(b);
+    setTimeout(() => b.remove(), 6000);
+}, 1500);
 
-                for (let url of sources) {
-                    const res = await fetch(url);
-                    const data = await res.json();
-                    if (data.items) allNews = allNews.concat(data.items);
-                }
+/* Yazı makinesi */
+let text = "Çok güzelsiniz  ";
+let name = "Belinay Hanım ❤";
+let index = 0;
+let msgDiv = document.getElementById("message");
 
-                // Haberleri tarihe göre sırala
-                allNews.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+setTimeout(function typeWriter() {
+    if (index < text.length) {
+        msgDiv.innerHTML = text.substring(0, index+1);
+        index++;
+        setTimeout(typeWriter, 120);
+    } else {
+        msgDiv.innerHTML = text + "<span class='shine'>" + name + "</span>";
+    }
+}, 3500);
 
-                renderSlider(allNews);
-                renderBreaking(allNews);
-                renderNews(allNews);
-                renderPopular(allNews);
-
-            } catch (err) {
-                console.error("Haber Yükleme Hatası:", err);
-            }
-        }
-
-        function renderSlider(list) {
-            const imgBox = document.getElementById("sliderImage");
-            let i = 0;
-
-            function next() {
-                imgBox.src = list[i].thumbnail || "https://via.placeholder.com/1200x400";
-                i = (i + 1) % list.length;
-            }
-
-            next();
-            setInterval(next, 5000);
-        }
-
-        function renderBreaking(list) {
-            const text = list.slice(0, 8).map(x => x.title).join("   •   ");
-            document.getElementById("breakingText").innerText = text;
-        }
-
-        function renderNews(list) {
-            const grid = document.getElementById("newsGrid");
-            grid.innerHTML = "";
-
-            list.forEach(item => {
-                const div = document.createElement("div");
-                div.className = "news-card";
-
-                div.innerHTML = `
-                    <img src="${item.thumbnail}">
-                    <div class="news-card-title">${item.title}</div>
-                    <div class="news-card-desc">${item.description.slice(0, 120)}...</div>
-                `;
-
-                div.onclick = () => window.open(item.link, "_blank");
-                grid.appendChild(div);
-            });
-        }
-
-        function renderPopular(list) {
-            const ul = document.getElementById("popularList");
-            ul.innerHTML = "";
-
-            list.slice(0, 10).forEach(item => {
-                const li = document.createElement("li");
-                li.innerText = "• " + item.title;
-                li.style.cursor = "pointer";
-                li.onclick = () => window.open(item.link, "_blank");
-                ul.appendChild(li);
-            });
-        }
-
-        loadNews();
-    </script>
+</script>
 
 </body>
-
 </html>
