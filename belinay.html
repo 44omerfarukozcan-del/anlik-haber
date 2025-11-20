@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Belinay Hanım ❤</title>
+
+<style>
+    body {
+        margin: 0;
+        overflow: hidden;
+        background: #0b0014;
+        font-family: Arial, sans-serif;
+        touch-action: manipulation;
+    }
+
+    /* Başlat ekranı */
+    #startBtn {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.9);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        z-index: 20;
+        color: white;
+        font-size: 28px;
+        text-align: center;
+    }
+
+    #startBtn button {
+        margin-top: 20px;
+        padding: 15px 35px;
+        font-size: 22px;
+        border: none;
+        border-radius: 15px;
+        background: #ff4fe9;
+        color: white;
+        box-shadow: 0px 0px 20px #ff4fe9;
+    }
+
+    /* Sis (mobil için optimize) */
+    .fog {
+        position: fixed;
+        width: 250%;
+        height: 250%;
+        background: radial-gradient(circle, rgba(255,0,150,0.18) 0%, rgba(0,0,0,0) 70%);
+        animation: fogMove 14s infinite alternate linear;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    @keyframes fogMove {
+        0% { transform: translate(-10%, -10%); }
+        100% { transform: translate(-35%, -35%); }
+    }
+
+    /* 3D dönen kalp */
+    #bigHeart {
+        position: fixed;
+        top: 18%;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 85px;
+        text-shadow: 0 0 25px #ff4fe9;
+        animation: spin 4s infinite linear;
+        opacity: 0;
+        transition: opacity 1s;
+        z-index: 2;
+        pointer-events: none;
+    }
+
+    @keyframes spin {
+        0% { transform: translateX(-50%) rotateY(0deg); }
+        100% { transform: translateX(-50%) rotateY(360deg); }
+    }
+
+    /* Lens flare */
+    #flare {
+        position: fixed;
+        top: 33%;
+        left: 50%;
+        width: 200px;
+        height: 200px;
+        transform: translateX(-50%);
+        background: radial-gradient(circle, rgba(255,100,255,0.6), rgba(0,0,0,0));
+        filter: blur(25px);
+        animation: flareAnim 4s infinite alternate;
+        opacity: 0;
+        transition: opacity 1s;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    @keyframes flareAnim {
+        0% { transform: translateX(-50%) scale(1); }
+        100% { transform: translateX(-50%) scale(1.4); }
+    }
+
+    /* Altın yazı */
+    .gold {
+        position: fixed;
+        bottom: 10%;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 30px;
+        background: linear-gradient(90deg, #fff5a8, #ffd700, #ffbb00, #fff5a8);
+        -webkit-background-clip: text;
+        color: transparent;
+        background-size: 300%;
+        animation: goldFlow 3s infinite linear;
+        text-shadow: 0 0 15px rgba(255,255,255,0.45);
+        opacity: 0;
+        transition: opacity 1s;
+        z-index: 3;
+        white-space: nowrap;
+    }
+
+    @keyframes goldFlow {
+        0% { background-position: 0%; }
+        100% { background-position: 300%; }
+    }
+
+    /* Patlayan kalp */
+    .popHeart {
+        position: absolute;
+        font-size: 50px;
+        color: #ff68dd;
+        text-shadow: 0 0 20px #ff68dd;
+        animation: pop 0.6s ease-out forwards;
+        pointer-events: none;
+        z-index: 10;
+    }
+
+    @keyframes pop {
+        0% { transform: scale(0.2); opacity: 1; }
+        100% { transform: scale(3.5); opacity: 0; }
+    }
+
+    /* Kalp yağmuru */
+    .rainHeart {
+        position: absolute;
+        color: #ff3fe0;
+        font-size: 20px;
+        animation: fall 4s linear forwards;
+        text-shadow: 0 0 10px #ff3fe0;
+        z-index: 0;
+    }
+
+    @keyframes fall {
+        0% { transform: translateY(-50px); opacity: .9; }
+        100% { transform: translateY(100vh); opacity: 0; }
+    }
+
+    /* Kelebek */
+    .butterfly {
+        position: absolute;
+        font-size: 28px;
+        animation: fly 6s linear forwards;
+        z-index: 0;
+    }
+
+    @keyframes fly {
+        0% { transform: translateX(-60px ) translateY(0); }
+        100% { transform: translateX(120vw) translateY(-40vh); }
+    }
+</style>
+</head>
+
+<body>
+
+<!-- Başlat ekranı -->
+<div id="startBtn">
+    Sürpriz için tıkla 💖  
+    <button id="startButton">Başlat</button>
+</div>
+
+<!-- Efektler -->
+<div class="fog"></div>
+<div id="flare"></div>
+<div id="bigHeart">💗</div>
+<div class="gold" id="goldText">Çok güzelsiniz Belinay Hanım ❤</div>
+
+<!-- Müzik -->
+<audio id="music">
+    <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Monplaisir/LOVEMAKIN/Monplaisir_-03-_Kiss_Forever.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Pıt pıt sesi -->
+<audio id="popSound">
+    <source src="https://cdn.pixabay.com/download/audio/2023/03/07/audio_e7f885bb05.mp3?filename=pop-147073.mp3">
+</audio>
+
+<script>
+/* Başlat */
+document.getElementById("startButton").onclick = () => {
+    document.getElementById("startBtn").style.display = "none";
+
+    document.getElementById("bigHeart").style.opacity = 1;
+    document.getElementById("goldText").style.opacity = 1;
+    document.getElementById("flare").style.opacity = 1;
+
+    document.getElementById("music").play();
+};
+
+/* Tıklayınca pıt sesi + patlayan kalp */
+document.addEventListener("click", (e) => {
+    if (document.getElementById("startBtn").style.display !== "none") return;
+
+    let pop = document.createElement("div");
+    pop.classList.add("popHeart");
+    pop.innerHTML = "💖";
+    pop.style.left = e.clientX + "px";
+    pop.style.top = e.clientY + "px";
+    document.body.appendChild(pop);
+
+    let s = document.getElementById("popSound").cloneNode(true);
+    s.play();
+
+    setTimeout(() => pop.remove(), 600);
+});
+
+/* Kalp yağmuru */
+setInterval(() => {
+    if (document.getElementById("startBtn").style.display !== "none") return;
+
+    let h = document.createElement("div");
+    h.classList.add("rainHeart");
+    h.innerHTML = "💖";
+    h.style.left = Math.random() * window.innerWidth + "px";
+    h.style.fontSize = (15 + Math.random() * 35) + "px";
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 4000);
+}, 150);
+
+/* Uçan kelebek */
+setInterval(() => {
+    if (document.getElementById("startBtn").style.display !== "none") return;
+
+    let b = document.createElement("div");
+    b.classList.add("butterfly");
+    b.innerHTML = "🦋";
+    b.style.left = "-60px";
+    b.style.top = Math.random() * window.innerHeight + "px";
+    document.body.appendChild(b);
+    setTimeout(() => b.remove(), 6000);
+}, 2000);
+</script>
+
+</body>
+</html>
+     
