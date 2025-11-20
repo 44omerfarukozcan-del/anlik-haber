@@ -8,216 +8,97 @@
     body {
         margin: 0;
         overflow: hidden;
-        background: #000;
+        background: #0b0014;
         font-family: 'Arial', sans-serif;
     }
 
-    /* Başlangıç ekranı */
-    #startScreen {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(135deg, #ff0099, #6600ff);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        color: white;
-        font-size: 32px;
-        cursor: pointer;
-        text-shadow: 0 0 15px white;
-        z-index: 10;
+    /* 3D Dönen büyük kalp */
+    #bigHeart {
+        position: fixed;
+        top: 20%;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 90px;
+        text-shadow: 0 0 25px #ff4fe9;
+        animation: spin 4s infinite linear;
     }
 
-    #startScreen button {
-        margin-top: 20px;
-        padding: 12px 25px;
-        font-size: 22px;
-        border: none;
-        background: white;
-        color: #ff0099;
-        border-radius: 10px;
-        cursor: pointer;
-        font-weight: bold;
-        box-shadow: 0 0 15px white;
+    @keyframes spin {
+        0% { transform: translateX(-50%) rotateY(0deg); }
+        100% { transform: translateX(-50%) rotateY(360deg); }
     }
 
-    /* Hareketli neon arka plan */
-    @keyframes neonBg {
-        0% { background-color: #11001d; }
-        25% { background-color: #1a0030; }
-        50% { background-color: #260040; }
-        75% { background-color: #1a0030; }
-        100% { background-color: #11001d; }
-    }
-    body {
-        animation: neonBg 6s infinite alternate;
-    }
-
-    /* Sis / duman efekti */
-    .fog {
-        position: absolute;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(circle, rgba(255,0,150,0.25) 0%, rgba(0,0,0,0) 70%);
-        animation: fogMove 12s infinite alternate;
-        pointer-events: none;
-    }
-
-    @keyframes fogMove {
-        0% { transform: translate(-10%, -10%); }
-        100% { transform: translate(-30%, -30%); }
-    }
-
-    /* Neon kalpler */
-    .heart {
-        position: absolute;
-        color: #ff2bdc;
-        text-shadow:
-            0 0 10px #ff2bdc,
-            0 0 25px #ff2bdc,
-            0 0 45px #ff2bdc;
-        animation: fall 3.8s linear forwards;
-    }
-
-    @keyframes fall {
-        0% { transform: translateY(-150px) scale(2); opacity: 1; }
-        100% { transform: translateY(900px) scale(0.3); opacity: 0; }
-    }
-
-    /* Tıklanınca patlayan kalp */
-    @keyframes pop {
-        0% { transform: scale(0); opacity: 1; }
-        100% { transform: scale(4); opacity: 0; }
-    }
+    /* Kalp patlama */
     .popHeart {
         position: absolute;
-        color: #ff66dd;
-        text-shadow: 0 0 20px #ff66dd;
+        font-size: 55px;
+        color: #ff68dd;
+        text-shadow: 0 0 20px #ff68dd;
         animation: pop 0.6s ease-out forwards;
-        font-size: 45px;
         pointer-events: none;
     }
 
-    /* Uçuşan kelebek */
-    .butterfly {
-        position: absolute;
-        font-size: 30px;
-        animation: fly 6s linear;
+    @keyframes pop {
+        0% { transform: scale(0.2); opacity: 1; }
+        100% { transform: scale(4); opacity: 0; }
     }
 
-    @keyframes fly {
-        0% { transform: translateX(-50px) translateY(0); }
-        100% { transform: translateX(120vw) translateY(-50vh); }
-    }
-
-    /* Yazı makinesi + neon */
-    #message {
+    /* Altın akan yazı */
+    .gold {
+        font-size: 38px;
         position: fixed;
-        top: 50%;
+        bottom: 10%;
         left: 50%;
-        transform: translate(-50%,-50%);
-        font-size: 40px;
-        white-space: nowrap;
-        color: #ff7de9;
-        opacity: 0;
-        text-shadow:
-            0 0 8px #ff61f7,
-            0 0 30px #ff1ac7,
-            0 0 55px #ff0ec2;
-        animation: fadeIn 2s forwards 4.5s;
+        transform: translateX(-50%);
+        background: linear-gradient(90deg, #fff4a6, #ffd700, #ffbb00, #fff4a6);
+        -webkit-background-clip: text;
+        color: transparent;
+        background-size: 300%;
+        animation: goldFlow 3s infinite linear;
+        text-shadow: 0 0 20px rgba(255,255,255,0.4);
     }
 
-    @keyframes fadeIn {
-        100% { opacity: 1; }
-    }
-
-    /* Parlayan titreşen Belinay */
-    .shine {
-        animation: shineAnim 1s infinite alternate;
-    }
-
-    @keyframes shineAnim {
-        0% { text-shadow: 0 0 10px #ff99ff; }
-        100% { text-shadow: 0 0 25px #ff00ff; }
+    @keyframes goldFlow {
+        0% { background-position: 0%; }
+        100% { background-position: 300%; }
     }
 </style>
 </head>
 
 <body>
 
-<!-- Başlangıç ekranı -->
-<div id="startScreen">
-    Sürpriz için hazır mısınız? 💖  
-    <button>Tıkla ve Başlat</button>
-</div>
+<!-- 3D dönen kalp -->
+<div id="bigHeart">💗</div>
 
-<!-- Sis efekti -->
-<div class="fog"></div>
+<!-- Altın akan yazı -->
+<div class="gold">Çok güzelsiniz Belinay Hanım ❤</div>
 
-<!-- Müzik -->
-<audio id="music" loop>
+<!-- Arka plan müziği -->
+<audio id="music" autoplay loop>
     <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Monplaisir/LOVEMAKIN/Monplaisir_-_03_-_Kiss_Forever.mp3" type="audio/mpeg">
 </audio>
 
-<div id="message"></div>
+<!-- Pıt pıt ses efekti -->
+<audio id="popSound">
+    <source src="https://cdn.pixabay.com/download/audio/2023/03/07/audio_e7f885bb05.mp3?filename=pop-147073.mp3">
+</audio>
 
 <script>
-
-document.getElementById("startScreen").onclick = function() {
-    this.style.display = "none";
-    document.getElementById("music").play();
-};
-
-/* Kalp yağmuru */
-setInterval(() => {
-    const heart = document.createElement("div");
-    heart.classList.add("heart");
-    heart.innerHTML = "💖";
-    heart.style.left = Math.random() * window.innerWidth + "px";
-    heart.style.fontSize = (30 + Math.random() * 60) + "px";
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 4000);
-}, 120);
-
-/* Tıklayınca patlayan kalp */
+/* Tıklayınca patlama + ses */
 document.addEventListener("click", (e)=>{
-    const pop = document.createElement("div");
+    let pop = document.createElement("div");
     pop.classList.add("popHeart");
-    pop.innerHTML = "💗";
+    pop.innerHTML = "💖";
     pop.style.left = e.clientX + "px";
     pop.style.top = e.clientY + "px";
     document.body.appendChild(pop);
-    setTimeout(() => pop.remove(), 600);
+
+    // Pıt pıt sesi
+    let s = document.getElementById("popSound").cloneNode(true);
+    s.play();
+
+    setTimeout(()=>pop.remove(),600);
 });
-
-/* Uçuşan kelebekler */
-setInterval(() => {
-    const b = document.createElement("div");
-    b.classList.add("butterfly");
-    b.innerHTML = "🦋";
-    b.style.left = "-50px";
-    b.style.top = Math.random() * window.innerHeight + "px";
-    document.body.appendChild(b);
-    setTimeout(() => b.remove(), 6000);
-}, 1500);
-
-/* Yazı makinesi */
-let text = "Çok güzelsiniz  ";
-let name = "Belinay Hanım ❤";
-let index = 0;
-let msgDiv = document.getElementById("message");
-
-setTimeout(function typeWriter() {
-    if (index < text.length) {
-        msgDiv.innerHTML = text.substring(0, index+1);
-        index++;
-        setTimeout(typeWriter, 120);
-    } else {
-        msgDiv.innerHTML = text + "<span class='shine'>" + name + "</span>";
-    }
-}, 3500);
-
 </script>
 
 </body>
