@@ -6,11 +6,7 @@
   <title>Belinay Yılbaşı Hediyesi | Advent Takvimi</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * {box-sizing: border-box;margin: 0;padding: 0;}
 
     body {
       font-family: "Poppins", sans-serif;
@@ -33,10 +29,7 @@
       backdrop-filter: blur(12px);
     }
 
-    .header {
-      text-align: center;
-      margin-bottom: 20px;
-    }
+    .header {text-align: center;margin-bottom: 20px;}
 
     .header h1 {
       font-size: 1.9rem;
@@ -53,10 +46,7 @@
       margin-bottom: 4px;
     }
 
-    .header p {
-      font-size: 0.92rem;
-      opacity: 0.85;
-    }
+    .header p {font-size: 0.92rem;opacity: 0.85;}
 
     .start-btn {
       margin: 18px auto 0;
@@ -72,18 +62,10 @@
       background: linear-gradient(135deg, #ff5e8a, #ffb347);
       color: #1b0b19;
       box-shadow: 0 10px 20px rgba(255, 94, 138, 0.4);
-      transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+      transition: 0.15s;
     }
 
-    .start-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 14px 30px rgba(255, 94, 138, 0.5);
-      opacity: 0.95;
-    }
-
-    .start-btn span {
-      font-size: 1.1rem;
-    }
+    .start-btn:hover {transform: translateY(-1px);opacity: 0.95;}
 
     .subtitle {
       text-align: center;
@@ -94,28 +76,15 @@
       opacity: 0.7;
     }
 
-    .grid-wrapper {
-      margin-top: 16px;
-    }
-
     .gift-grid {
       margin-top: 14px;
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(4, 1fr);
       gap: 14px;
     }
 
-    @media (max-width: 700px) {
-      .gift-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-    }
-
-    @media (max-width: 480px) {
-      .gift-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
+    @media (max-width: 700px) {.gift-grid {grid-template-columns: repeat(3, 1fr);}}
+    @media (max-width: 480px) {.gift-grid {grid-template-columns: repeat(2, 1fr);}}
 
     .gift {
       position: relative;
@@ -128,21 +97,12 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.3s ease;
+      transition: 0.18s ease;
       box-shadow: 0 10px 18px rgba(0, 0, 0, 0.45);
     }
 
-    .gift::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at top, rgba(255, 255, 255, 0.18), transparent 55%);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
     .gift-number {
-      font-size: 1.9rem;
+      font-size: 2rem;
       font-weight: 700;
       color: #ffdde9;
       text-shadow: 0 0 10px rgba(255, 180, 200, 0.8);
@@ -153,45 +113,23 @@
       bottom: 6px;
       left: 50%;
       transform: translateX(-50%);
-      font-size: 0.65rem;
+      font-size: 0.7rem;
       letter-spacing: 0.2em;
       text-transform: uppercase;
       opacity: 0;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.3s;
       color: #ffe9f7;
     }
 
-    .gift:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 14px 26px rgba(0, 0, 0, 0.6);
-    }
-
+    .gift:hover {transform: translateY(-3px);}
     .gift.opened {
       background: radial-gradient(circle at top, #ffb6d5 0, #ff5e8a 30%, #271329 100%);
-      transform: translateY(-2px) scale(1.02);
-      box-shadow: 0 16px 30px rgba(255, 94, 138, 0.55);
     }
+    .gift.opened .gift-number {opacity: 0;}
+    .gift.opened .gift-opened-label {opacity: 1;}
 
-    .gift.opened::before {
-      opacity: 1;
-    }
-
-    .gift.opened .gift-number {
-      opacity: 0;
-    }
-
-    .gift.opened .gift-opened-label {
-      opacity: 1;
-    }
-
-    .gift-emoji {
-      position: absolute;
-      top: 8px;
-      right: 10px;
-      font-size: 1.1rem;
-      opacity: 0.85;
-      pointer-events: none;
-    }
+    /* Emoji tamamen kaldırıldı */
+    .gift-emoji {display: none !important;}
 
     /* MODAL */
     .modal-backdrop {
@@ -204,59 +142,26 @@
       z-index: 30;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.2s ease;
+      transition: 0.2s;
     }
 
-    .modal-backdrop.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
+    .modal-backdrop.active {opacity: 1;pointer-events: auto;}
 
     .modal {
       width: 90%;
       max-width: 420px;
       background: radial-gradient(circle at top, #3c1f3b, #140915);
       border-radius: 22px;
-      padding: 20px 18px 18px;
-      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7);
-      position: relative;
+      padding: 20px;
       text-align: center;
       color: #ffeaf8;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7);
     }
 
-    .modal-badge {
-      font-size: 0.75rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      opacity: 0.8;
-      margin-bottom: 4px;
-    }
-
-    .modal-title {
-      font-size: 1.3rem;
-      font-weight: 700;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-
-    .modal-emoji {
-      font-size: 1.6rem;
-    }
-
-    .modal-quote {
-      font-size: 0.9rem;
-      font-style: italic;
-      opacity: 0.9;
-      margin-bottom: 10px;
-    }
-
-    .modal-desc {
-      font-size: 0.85rem;
-      opacity: 0.85;
-    }
+    .modal-title {font-size: 1.3rem;font-weight: 700;margin-bottom: 8px;}
+    .modal-badge {opacity: 0.8;font-size: 0.75rem;margin-bottom: 4px;}
+    .modal-quote {font-style: italic;opacity: 0.9;margin-bottom: 10px;}
+    .modal-desc {opacity: 0.85;font-size: 0.9rem;}
 
     .close-btn {
       margin-top: 14px;
@@ -264,21 +169,13 @@
       border-radius: 999px;
       border: none;
       font-weight: 600;
-      font-size: 0.85rem;
-      cursor: pointer;
       background: linear-gradient(135deg, #ffd1e3, #ff9a9e);
       color: #3a1024;
-      box-shadow: 0 10px 18px rgba(255, 154, 158, 0.4);
-      transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
-    }
-
-    .close-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 12px 24px rgba(255, 154, 158, 0.6);
-      opacity: 0.96;
+      cursor: pointer;
     }
   </style>
 </head>
+
 <body>
   <div class="app">
     <header class="header">
@@ -287,87 +184,85 @@
       <p>Her kutuda Belinay için küçük bir sürpriz ve minik bir not saklı. 🎄✨</p>
 
       <button class="start-btn" id="startBtn">
-        <span>🎁</span> Başla
+        Başla 🎁
       </button>
     </header>
 
-    <div class="subtitle">Her gün bir sürpriz!</div>
+    <div class="subtitle">HER GÜN BİR SÜRPRİZ!</div>
 
-    <section id="box" class="grid-wrapper">
+    <section id="box">
       <div class="gift-grid">
-        <!-- 12 kutu -->
+
+        <!-- EMOJİSİZ KUTULAR -->
         <div class="gift" data-id="1">
-          <div class="gift-emoji">🍫</div>
           <div class="gift-number">1</div>
-          <div class="gift-opened-label">Sürpriz Açıldı</div>
+          <div class="gift-opened-label">SÜRPRİZ AÇILDI</div>
         </div>
+
         <div class="gift" data-id="2">
-          <div class="gift-emoji">✨</div>
           <div class="gift-number">2</div>
-          <div class="gift-opened-label">Sürpriz Açıldı</div>
+          <div class="gift-opened-label">SÜRPRİZ AÇILDI</div>
         </div>
+
         <div class="gift" data-id="3">
-          <div class="gift-emoji">☕</div>
           <div class="gift-number">3</div>
-          <div class="gift-opened-label">Sürpriz Açıldı</div>
+          <div class="gift-opened-label">SÜRPRİZ AÇILDI</div>
         </div>
+
         <div class="gift" data-id="4">
-          <div class="gift-emoji">🧸</div>
           <div class="gift-number">4</div>
-          <div class="gift-opened-label">Sürpriz Açıldı</div>
+          <div class="gift-opened-label">SÜRPRİZ AÇILDI</div>
         </div>
+
         <div class="gift" data-id="5">
-          <div class="gift-emoji">🕯️</div>
           <div class="gift-number">5</div>
-          <div class="gift-opened-label">Sürpriz Açıldı</div>
+          <div class="gift-opened-label">SÜRPRİZ AÇILDI</div>
         </div>
+
         <div class="gift" data-id="6">
-          <div class="gift-emoji">🧦</div>
           <div class="gift-number">6</div>
-          <div class="gift-opened-label">Sürpriz Açıldı</div>
+          <div class="gift-opened-label">SÜRPRİZ AÇILDI</div>
         </div>
+
         <div class="gift" data-id="7">
-          <div class="gift-emoji">❄️</div>
           <div class="gift-number">7</div>
-          <div class="gift-opened-label">Sürpriz Açıldı</div>
+          <div class="gift-opened-label">SÜRPRİZ AÇILDI</div>
         </div>
+
         <div class="gift" data-id="8">
-          <div class="gift-emoji">🥚</div>
           <div class="gift-number">8</div>
-          <div class="gift-opened-label">Sürpriz Açıldı</div>
+          <div class="gift-opened-label">SÜRPRİZ AÇILDI</div>
         </div>
+
         <div class="gift" data-id="9">
-          <div class="gift-emoji">🎧</div>
           <div class="gift-number">9</div>
-          <div class="gift-opened-label">Sürpriz Açıldı</div>
+          <div class="gift-opened-label">SÜRPRİZ AÇILDI</div>
         </div>
+
         <div class="gift" data-id="10">
-          <div class="gift-emoji">🍪</div>
           <div class="gift-number">10</div>
-          <div class="gift-opened-label">Sürpriz Açıldı</div>
+          <div class="gift-opened-label">SÜRPRİZ AÇILDI</div>
         </div>
+
         <div class="gift" data-id="11">
-          <div class="gift-emoji">💆‍♀️</div>
           <div class="gift-number">11</div>
-          <div class="gift-opened-label">Sürpriz Açıldı</div>
+          <div class="gift-opened-label">SÜRPRİZ AÇILDI</div>
         </div>
+
         <div class="gift" data-id="12">
-          <div class="gift-emoji">🎉</div>
           <div class="gift-number">12</div>
-          <div class="gift-opened-label">Büyük Sürpriz</div>
+          <div class="gift-opened-label">BÜYÜK SÜRPRİZ</div>
         </div>
+
       </div>
     </section>
   </div>
 
-  <!-- Modal -->
+  <!-- MODAL -->
   <div class="modal-backdrop" id="modalBackdrop">
-    <div class="modal" id="modal">
+    <div class="modal">
       <div class="modal-badge" id="modalBadge">Sürpriz Kutusu Açıldı!</div>
-      <div class="modal-title">
-        <span class="modal-emoji" id="modalEmoji">🎁</span>
-        <span id="modalTitle">Sürpriz Başlık</span>
-      </div>
+      <div class="modal-title" id="modalTitle">Sürpriz</div>
       <div class="modal-quote" id="modalQuote">"Küçük bir not."</div>
       <p class="modal-desc" id="modalDesc"></p>
       <button class="close-btn" id="closeModal">Tamam</button>
@@ -376,133 +271,44 @@
 
   <script>
     const gifts = [
-      {
-        id: 1,
-        emoji: "🍫",
-        title: "Çikolata",
-        quote: "\"Mutluluk paylaştıkça artar.\"",
-        desc: "Belinay’ın modunu bir anda yükseltecek, tatlı bir çikolata sürprizi."
-      },
-      {
-        id: 2,
-        emoji: "✨",
-        title: "Sticker Seti",
-        quote: "\"Hayatı renklendir!\"",
-        desc: "Defterine, telefonuna, bilgisayarına… Ne istersen ona yapıştır!"
-      },
-      {
-        id: 3,
-        emoji: "☕",
-        title: "Sıcak Kahve",
-        quote: "\"İçini ısıtacak bir mola.\"",
-        desc: "Soğuk bir günde, Belinay’a özel mis gibi kokan bir kahve molası."
-      },
-      {
-        id: 4,
-        emoji: "🧸",
-        title: "Peluş Ayıcık",
-        quote: "\"Sana sarılmak için varım.\"",
-        desc: "Yalnız hissettiğinde sarılabileceğin yumuşacık bir arkadaş."
-      },
-      {
-        id: 5,
-        emoji: "🕯️",
-        title: "Kokulu Mum",
-        quote: "\"Işığını yansıt.\"",
-        desc: "Odanı aydınlatan, mis gibi kokusuyla huzur veren bir mum."
-      },
-      {
-        id: 6,
-        emoji: "🧦",
-        title: "Renkli Çorap",
-        quote: "\"Sıcacık adımlar at.\"",
-        desc: "Soğuk günlerde bile Belinay’ın ayakları üşümesin diye."
-      },
-      {
-        id: 7,
-        emoji: "❄️",
-        title: "Kar Küresi",
-        quote: "\"Bir dilek tut!\"",
-        desc: "Her salladığında başka bir dilek, başka bir hayal."
-      },
-      {
-        id: 8,
-        emoji: "🥚",
-        title: "Sürpriz Yumurta",
-        quote: "\"Acaba içinden ne çıkacak?\"",
-        desc: "Hem çikolata hem oyuncak… Çifte sürpriz!"
-      },
-      {
-        id: 9,
-        emoji: "🎧",
-        title: "Özel Playlist",
-        quote: "\"Ruhunu dinlendir.\"",
-        desc: "Belinay için özel seçilmiş şarkılardan oluşan minik bir çalma listesi."
-      },
-      {
-        id: 10,
-        emoji: "🍪",
-        title: "Kurabiye",
-        quote: "\"Ağzın tatlansın.\"",
-        desc: "Sıcacık, yumuşacık, fırından yeni çıkmış hayali kurabiye kokusu."
-      },
-      {
-        id: 11,
-        emoji: "💆‍♀️",
-        title: "Yüz Maskesi",
-        quote: "\"Yeni yıla ışıl ışıl gir!\"",
-        desc: "Mini bakım günü: Belinay parlasın, yeni yıl bile kıskansın."
-      },
-      {
-        id: 12,
-        emoji: "🎉",
-        title: "BÜYÜK SÜRPRİZ",
-        quote: "\"Harika bir yıl olsun!\"",
-        desc: "Bu kutunun içindeki sürpriz: Tüm yıl boyunca senin yanında olacak güzel dilekler, sevgi ve bol kahkaha. Belinay için kocaman bir yeni yıl hediyesi!"
-      }
+      {id:1,title:"Çikolata",quote:"Mutluluk paylaştıkça artar.",desc:"Belinay için tatlı bir sürpriz."},
+      {id:2,title:"Sticker Seti",quote:"Hayatı renklendir!",desc:"Telefonuna, defterine ne istersen."},
+      {id:3,title:"Sıcak Kahve",quote:"İçini ısıtacak bir mola.",desc:"Mis kokulu sıcak kahve hayali."},
+      {id:4,title:"Peluş Ayıcık",quote:"Sana sarılmak için varım.",desc:"Yumuşacık bir arkadaş."},
+      {id:5,title:"Kokulu Mum",quote:"Işığını yansıt.",desc:"Huzur veren bir koku."},
+      {id:6,title:"Renkli Çorap",quote:"Sıcacık adımlar at.",desc:"Üşümeye son!"},
+      {id:7,title:"Kar Küresi",quote:"Bir dilek tut!",desc:"Her sallayışta başka bir hayal."},
+      {id:8,title:"Sürpriz Yumurta",quote:"Acaba ne çıkacak?",desc:"Hem çikolata hem oyuncak!"},
+      {id:9,title:"Playlist",quote:"Ruhunu dinlendir.",desc:"Seçilmiş özel şarkılar."},
+      {id:10,title:"Kurabiye",quote:"Ağzın tatlansın.",desc:"Sıcacık kurabiye keyfi."},
+      {id:11,title:"Yüz Maskesi",quote:"Işıl ışıl ol!",desc:"Mini bakım zamanı."},
+      {id:12,title:"Büyük Sürpriz",quote:"Harika bir yıl olsun!",desc:"Belinay için özel dilekler."}
     ];
 
-    const startBtn = document.getElementById("startBtn");
-    const boxSection = document.getElementById("box");
-    const modalBackdrop = document.getElementById("modalBackdrop");
-    const modalEmoji = document.getElementById("modalEmoji");
-    const modalTitle = document.getElementById("modalTitle");
-    const modalQuote = document.getElementById("modalQuote");
-    const modalDesc = document.getElementById("modalDesc");
-    const closeModalBtn = document.getElementById("closeModal");
+    const startBtn=document.getElementById("startBtn");
+    const modal=document.getElementById("modalBackdrop");
+    const titleEl=document.getElementById("modalTitle");
+    const quoteEl=document.getElementById("modalQuote");
+    const descEl=document.getElementById("modalDesc");
+    const closeBtn=document.getElementById("closeModal");
 
-    startBtn.addEventListener("click", () => {
-      boxSection.scrollIntoView({ behavior: "smooth" });
+    startBtn.onclick=()=>{document.getElementById("box").scrollIntoView({behavior:"smooth"});}
+
+    document.querySelectorAll(".gift").forEach(el=>{
+      el.onclick=()=>{
+        el.classList.add("opened");
+        const id=Number(el.dataset.id);
+        const g=gifts.find(x=>x.id===id);
+        titleEl.textContent=g.title;
+        quoteEl.textContent=g.quote;
+        descEl.textContent=g.desc;
+        modal.classList.add("active");
+      };
     });
 
-    document.querySelectorAll(".gift").forEach((giftEl) => {
-      giftEl.addEventListener("click", () => {
-        const id = Number(giftEl.dataset.id);
-        const gift = gifts.find((g) => g.id === id);
-        if (!gift) return;
-
-        giftEl.classList.add("opened");
-
-        modalEmoji.textContent = gift.emoji;
-        modalTitle.textContent = gift.title;
-        modalQuote.textContent = gift.quote;
-        modalDesc.textContent = gift.desc;
-        modalBackdrop.classList.add("active");
-      });
-    });
-
-    function closeModal() {
-      modalBackdrop.classList.remove("active");
-    }
-
-    closeModalBtn.addEventListener("click", closeModal);
-    modalBackdrop.addEventListener("click", (e) => {
-      if (e.target === modalBackdrop) closeModal();
-    });
-
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") closeModal();
-    });
+    closeBtn.onclick=()=>modal.classList.remove("active");
+    modal.onclick=e=>{if(e.target===modal)modal.classList.remove("active");}
   </script>
+
 </body>
-</html> 
+</html>
